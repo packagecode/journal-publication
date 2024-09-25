@@ -1,0 +1,45 @@
+.main-content.landing-main {
+  background: var(--gray-1);
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+.pages .app-sidebar {
+  position: relative;
+  background-image: url(/src/assets/images/media/landing/banner.jpg);
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-blend-mode: exclusion;
+  background-color: #1a8f3a !important;
+}
+
+.landing-body .page-footer {
+  background-image: url(/src/assets/images/media/landing/banner.jpg);
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: difference;
+  background-color: #444592 !important;
+}
+
+.landing-body .landing-footer {
+  background-color: transparent !important;
+}
+
+.landing-body .landing-main-footer {
+  background-color: transparent !important;
+}
+
+.pages .app-sidebar.sticky-pin {
+  background-color: #fff !important;
+  position: fixed;
+  background: transparent;
+}
+
+.main-content.landing-main {
+  background-image: url(/src/assets/images/bgg2.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
