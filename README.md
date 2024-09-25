@@ -28,13 +28,13 @@ Before you begin, ensure you have the following installed on your local machine:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/sokrio/sokrio-app-frontend.git
+   git clone https://github.com/packagecode/journal-publication.git
    ```
 
 2. Enter the project directory
 
    ```
-   cd sokrio-app-frontend
+   cd journal-publication
    ```
 
 ## Development
