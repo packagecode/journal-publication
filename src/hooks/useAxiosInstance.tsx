@@ -1,8 +1,14 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
-import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import { showToast } from "../contexts/Toast.tsx";
 import { RootState } from "../redux/store.tsx";
+
+const getCsrfToken = () => {
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("XSRF-TOKEN="));
+  return token ? token.split("=")[1] : null;
+};
 
 const useAxiosInstance = () => {
   const apiEndPoint = useSelector((state: RootState) => state?.apiEndPoint);
@@ -11,7 +17,7 @@ const useAxiosInstance = () => {
     withXSRFToken: true,
     headers: {
       "Content-Type": "application/json",
-      "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
+      "X-XSRF-TOKEN": getCsrfToken(),
     },
   });
 
