@@ -1,5 +1,6 @@
 import { Middleware } from "@reduxjs/toolkit";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { SetIsLogged, SetUser } from "./action";
 import { RootState } from "./store"; // Adjust the path as needed
 
@@ -23,6 +24,10 @@ const checkAuthUser: Middleware<{}, RootState> =
       userFetchPromise = axios
         .get(state.apiEndPoint + "/user", {
           withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
+          },
         })
         .then((response) => {
           if (response.data.user) {

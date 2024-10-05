@@ -19,7 +19,7 @@ const useAxiosInstance = () => {
     endpoint = endpoint.replace("api", "") + "sanctum/csrf-cookie";
 
     try {
-      await axiosInstance.get(endpoint);
+      await axios.get(endpoint);
     } catch (error) {
       console.error("Error setting up CSRF protection:", error);
     }

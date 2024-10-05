@@ -42,7 +42,7 @@ const useAuthService = () => {
       remember_me: boolean
     ): Promise<LoginResponse> => {
       try {
-        // await getCsrfCookie();
+        await csrf();
         const response = await axiosInstance.post(api("login"), {
           email,
           password,
@@ -60,20 +60,20 @@ const useAuthService = () => {
         throw error.response.data;
       }
     },
-    [getCsrfCookie]
+    [csrf]
   );
 
   const register = useCallback(
     async (data: object): Promise<LoginResponse> => {
       try {
-        await getCsrfCookie();
+        await csrf();
         const response = await axiosInstance.post(api("register"), data);
         return response.data;
       } catch (error: any) {
         throw error.response.data;
       }
     },
-    [getCsrfCookie]
+    [csrf]
   );
 
   const logout = useCallback(async () => {
