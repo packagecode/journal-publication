@@ -42,7 +42,7 @@ const useAuthService = () => {
       remember_me: boolean
     ): Promise<LoginResponse> => {
       try {
-        await getCsrfCookie();
+        // await getCsrfCookie();
         const response = await axiosInstance.post(api("login"), {
           email,
           password,
