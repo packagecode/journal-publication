@@ -8,6 +8,7 @@ const useAxiosInstance = () => {
   const apiEndPoint = useSelector((state: RootState) => state?.apiEndPoint);
   const axiosInstance: AxiosInstance = axios.create({
     withCredentials: true,
+    withXSRFToken: true,
     headers: {
       "Content-Type": "application/json",
       "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),

@@ -23,6 +23,7 @@ const checkAuthUser: Middleware<{}, RootState> =
       userFetchPromise = axios
         .get(state.apiEndPoint + "/user", {
           withCredentials: true,
+          withXSRFToken: true,
         })
         .then((response) => {
           if (response.data.user) {
