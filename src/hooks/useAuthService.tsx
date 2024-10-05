@@ -1,5 +1,6 @@
 import useAxiosInstance from "@/hooks/useAxiosInstance";
 import { RootState } from "@/redux/store";
+import axios from "axios";
 import Cookies from "js-cookie";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,12 +44,22 @@ const useAuthService = () => {
     ): Promise<LoginResponse> => {
       try {
         await csrf();
-        const response = await axiosInstance.post(api("login"), {
-          email,
-          password,
-          device_name: window.navigator.userAgent,
-          remember_me,
-        });
+        const response = await axios.post(
+          api("login"),
+          {
+            email,
+            password,
+            device_name: window.navigator.userAgent,
+            remember_me,
+          },
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+              "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
+            },
+          }
+        );
         const { token, user }: { user: any; token: string } = response.data;
         if (token) {
           localStorage.setItem("isLogin", JSON.stringify(true));
