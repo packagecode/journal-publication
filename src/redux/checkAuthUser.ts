@@ -25,6 +25,7 @@ const checkAuthUser: Middleware<{}, RootState> =
         .get(state.apiEndPoint + "/user", {
           withCredentials: true,
           headers: {
+            Accept: "application/json",
             "Content-Type": "application/json",
             "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
           },

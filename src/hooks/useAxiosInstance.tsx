@@ -9,6 +9,7 @@ const useAxiosInstance = () => {
   const axiosInstance: AxiosInstance = axios.create({
     withCredentials: true,
     headers: {
+      Accept: "application/json",
       "Content-Type": "application/json",
       "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
     },
