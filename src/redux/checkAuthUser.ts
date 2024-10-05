@@ -15,6 +15,7 @@ const checkAuthUser: Middleware<{}, RootState> =
       isFetchingCSRF = true;
       axios.get(state.apiEndPoint.replace("api", "") + "sanctum/csrf-cookie", {
         withCredentials: true,
+        baseURL: state.apiEndPoint.replace("/api", ""),
       });
     }
 
@@ -24,6 +25,7 @@ const checkAuthUser: Middleware<{}, RootState> =
         .get(state.apiEndPoint + "/user", {
           withCredentials: true,
           withXSRFToken: true,
+          baseURL: state.apiEndPoint.replace("/api", ""),
         })
         .then((response) => {
           if (response.data.user) {

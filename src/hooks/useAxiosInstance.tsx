@@ -15,6 +15,7 @@ const useAxiosInstance = () => {
   const axiosInstance: AxiosInstance = axios.create({
     withCredentials: true,
     withXSRFToken: true,
+    baseURL: apiEndPoint.replace("/api", ""),
     headers: {
       "Content-Type": "application/json",
       "X-XSRF-TOKEN": getCsrfToken(),
