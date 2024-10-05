@@ -1,24 +1,19 @@
 import face1 from "@/assets/images/faces/1.jpg";
-import landingpage1 from "@/assets/images/media/landing/1.png";
 import media43 from "@/assets/images/media/media-43.jpg";
 import media44 from "@/assets/images/media/media-44.jpg";
 import media45 from "@/assets/images/media/media-45.jpg";
 import media66 from "@/assets/images/media/media-66.png";
 import Search from "@/pages/common/search";
-import { ThemeChanger } from "@/redux/action";
-import store from "@/redux/store";
 import { FC, Fragment } from "react";
 import { Button, Card, Carousel, Col, ListGroup, Row } from "react-bootstrap";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import LandingBanner from "../common/landing-banner";
 import LatestArticle from "./latestArticle";
 
 interface LandingProps {}
 
-const Landing: FC<LandingProps> = ({ ThemeChanger }: any) => {
+const Landing: FC<LandingProps> = () => {
   function handleClick() {
-    const theme = store.getState();
-    ThemeChanger({ ...theme, toggled: "close", dataNavLayout: "horizontal" });
     if (document.querySelector(".offcanvas-end")?.classList.contains("show")) {
       document.querySelector(".offcanvas-end")?.classList.remove("show");
     }
@@ -27,6 +22,7 @@ const Landing: FC<LandingProps> = ({ ThemeChanger }: any) => {
   const handleChange = (e: any) => {
     console.log(e.target.value);
   };
+
   return (
     <Fragment>
       {/* <Helmet>
@@ -34,37 +30,7 @@ const Landing: FC<LandingProps> = ({ ThemeChanger }: any) => {
       </Helmet>
       <Navbar /> */}
       <div className="main-content landing-main" onClick={() => handleClick()}>
-        <div className="landing-banner" id="home">
-          <section className="section">
-            <div className="container main-banner-container">
-              <Row>
-                <Col xxl={7} xl={7} lg={7} md={8}>
-                  <div className="py-lg-5">
-                    <div className="mb-3">
-                      <h5 className="fw-semibold text-fixed-white op-9">
-                        DIU Journal of Multidisciplinary Area
-                      </h5>
-                    </div>
-                    <p className="landing-banner-heading mb-3">
-                      <span className="text-secondary">Multidisciplinary</span>{" "}
-                      journal focusing on innovations in materials-based
-                      technologies
-                    </p>
-                    <Link to="/" className="m-1 btn btn-primary-gradient">
-                      Submit your manuscript
-                      <i className="ri-arrow-right-line ms-2 align-middle"></i>
-                    </Link>
-                  </div>
-                </Col>
-                <Col xxl={5} xl={5} lg={5} md={4}>
-                  <div className="text-end landing-main-image landing-heading-img">
-                    <img src={landingpage1} alt="" className="img-fluid" />
-                  </div>
-                </Col>
-              </Row>
-            </div>
-          </section>
-        </div>
+        <LandingBanner />
         <Search />
         <div className="container">
           <Row>
@@ -123,37 +89,46 @@ const Landing: FC<LandingProps> = ({ ThemeChanger }: any) => {
                           <Link to="/">Sensors</Link>
                         </li>
                         <li>
-                          <Link to="/">Digital</Link>
+                          <Link to="/">Aims & Scope</Link>
                         </li>
                         <li>
-                          <Link to="/">Journal</Link>
+                          <Link to="/">Editorial Board</Link>
                         </li>
                         <li>
-                          <Link to="/">Article</Link>
+                          <Link to="/">Reviewer Board</Link>
                         </li>
                         <li>
-                          <Link to="/">Research</Link>
+                          <Link to="/">Instructions for Authors</Link>
                         </li>
                         <li>
-                          <Link to="/">Innovation</Link>
+                          <Link to="/">Topics</Link>
                         </li>
                         <li>
-                          <Link to="/">Technology</Link>
+                          <Link to="/">Paper Template</Link>
                         </li>
                         <li>
-                          <Link to="/">Materials</Link>
+                          <Link to="/">Peer Review Process</Link>
                         </li>
                         <li>
-                          <Link to="/">Science</Link>
+                          <Link to="/">Indexing & Archiving</Link>
                         </li>
                         <li>
-                          <Link to="/">Engineering</Link>
+                          <Link to="/">COPE</Link>
                         </li>
                         <li>
-                          <Link to="/">Health</Link>
+                          <Link to="/">Copyright </Link>
                         </li>
                         <li>
-                          <Link to="/">Environment</Link>
+                          <Link to="/">Plagiarism Policy</Link>
+                        </li>
+                        <li>
+                          <Link to="/">Journal History</Link>
+                        </li>
+                        <li>
+                          <Link to="/">Journal Awards</Link>
+                        </li>
+                        <li>
+                          <Link to="/">Editorial Office</Link>
                         </li>
                       </ul>
                     </div>
@@ -590,8 +565,4 @@ const Landing: FC<LandingProps> = ({ ThemeChanger }: any) => {
   );
 };
 
-const mapStateToProps = (state: any) => ({
-  local_varaiable: state,
-});
-
-export default connect(mapStateToProps, { ThemeChanger })(Landing);
+export default Landing;

@@ -1,4 +1,8 @@
+import diuLogo from "@/assets/images/diu.png";
 import diuLogoBlack from "@/assets/images/diu_black.png";
+import fgsLogo from "@/assets/images/fgs-logo.png";
+import iqacLogo from "@/assets/images/iqac.png";
+import wurLogo from "@/assets/images/wur.png";
 import { Button, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 const Footer = () => {
@@ -28,36 +32,28 @@ const Footer = () => {
             </Col>
             <Col xl={2}>
               <div className="px-4">
-                <h6 className="fw-semibold mb-3 text-fixed-white">PAGES</h6>
+                <h6 className="fw-semibold mb-3 text-fixed-white">
+                  Further Information
+                </h6>
                 <ul className="list-unstyled op-6 fw-normal landing-footer-list">
                   <li>
                     <Link to="#" className="text-fixed-white">
-                      Email
+                      Article Processing Charges
                     </Link>
                   </li>
                   <li>
                     <Link to="#" className="text-fixed-white">
-                      Profile
+                      Pay an Invoice
                     </Link>
                   </li>
                   <li>
                     <Link to="#" className="text-fixed-white">
-                      Timeline
+                      Open Access Policy
                     </Link>
                   </li>
                   <li>
                     <Link to="#" className="text-fixed-white">
-                      Projects
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="#" className="text-fixed-white">
-                      Contacts
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="#" className="text-fixed-white">
-                      Portfolio
+                      Contact DIU Journal
                     </Link>
                   </li>
                 </ul>
@@ -65,36 +61,33 @@ const Footer = () => {
             </Col>
             <Col xl={2}>
               <div className="px-4">
-                <h6 className="fw-semibold mb-3 text-fixed-white">INFO</h6>
+                <h6 className="fw-semibold mb-3 text-fixed-white">
+                  Guidelines
+                </h6>
                 <ul className="list-unstyled op-6 fw-normal landing-footer-list">
                   <li>
                     <Link to="#" className="text-fixed-white">
-                      Our Team
+                      For Authors
                     </Link>
                   </li>
                   <li>
                     <Link to="#" className="text-fixed-white">
-                      Contact US
+                      For Reviewers
                     </Link>
                   </li>
                   <li>
                     <Link to="#" className="text-fixed-white">
-                      About
+                      For Editors
                     </Link>
                   </li>
                   <li>
                     <Link to="#" className="text-fixed-white">
-                      Services
+                      For Librarians
                     </Link>
                   </li>
                   <li>
                     <Link to="#" className="text-fixed-white">
-                      Blog
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="#" className="text-fixed-white">
-                      Terms & Conditions
+                      For Publishers
                     </Link>
                   </li>
                 </ul>
@@ -167,6 +160,30 @@ const Footer = () => {
                   </li>
                 </ul>
               </div>
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col
+              xs
+              lg="8"
+              className="footer-logo-bg d-flex flex-row justify-content-around"
+            >
+              <Link to="https://diu.ac/" target="_blank" className="p-3">
+                <img src={diuLogo} alt="diu" className="img-fluid img-height" />
+              </Link>
+              <Link to="https://iqac.diu.ac/" target="_blank" className="p-3">
+                <img src={iqacLogo} alt="" className="img-fluid img-height" />
+              </Link>
+              <Link
+                to="https://www.topuniversities.com/world-university-rankings/2022"
+                target="_blank"
+                className="p-3"
+              >
+                <img src={wurLogo} alt="" className="img-fluid img-height" />
+              </Link>
+              <Link to="https://diu.ac/alumni" target="_blank" className="p-3">
+                <img src={fgsLogo} alt="" className="img-fluid img-height" />
+              </Link>
             </Col>
           </Row>
         </div>

@@ -1,9 +1,9 @@
-
-import Permission from "@/interface/Permission";
-import User from "@/interface/User";
-import axiosInstance, { api, csrf } from "@/redux/axiosInstance";
+import useAxiosInstance from "@/hooks/useAxiosInstance";
+import { RootState } from "@/redux/store";
 import Cookies from "js-cookie";
 import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { SetIsLogged, SetUser } from "../redux/action";
 
 interface LoginResponse {
   token: string;
@@ -14,24 +14,26 @@ interface LoginResponse {
 }
 
 const useAuthService = () => {
+  const { axiosInstance, api, csrf } = useAxiosInstance();
+  const isLogged = useSelector((state: RootState) => state.isLogged);
+  const user = useSelector((state: RootState) => state.user);
 
-  const getCsrfCookie = useCallback(
-    async (landlord: boolean = false): Promise<string | undefined> => {
-      let csrfToken = Cookies.get("XSRF-TOKEN");
+  const dispatch = useDispatch();
 
-      if (!csrfToken) {
-        try {
-          await csrf(landlord); // Fetch CSRF token
-          csrfToken = Cookies.get("XSRF-TOKEN");
-        } catch (error) {
-          console.error("Error fetching CSRF token:", error);
-        }
+  const getCsrfCookie = useCallback(async (): Promise<string | undefined> => {
+    let csrfToken = Cookies.get("XSRF-TOKEN");
+
+    if (!csrfToken) {
+      try {
+        await csrf(); // Fetch CSRF token
+        csrfToken = Cookies.get("XSRF-TOKEN");
+      } catch (error) {
+        console.error("Error fetching CSRF token:", error);
       }
+    }
 
-      return csrfToken;
-    },
-    []
-  );
+    return csrfToken;
+  }, []);
 
   const login = useCallback(
     async (
@@ -45,38 +47,27 @@ const useAuthService = () => {
           email,
           password,
           device_name: window.navigator.userAgent,
-          remember_me
+          remember_me,
         });
-        if (response.data.token) {
+        const { token, user }: { user: any; token: string } = response.data;
+        if (token) {
           localStorage.setItem("isLogin", JSON.stringify(true));
+          dispatch(SetIsLogged(true));
+          dispatch(SetUser(user));
         }
-        const responseME = await axiosInstance.get(api("me"));
-        const responseAllPermissions = await axiosInstance.get(
-          api("permissions")
-        );
+        return response.data;
+      } catch (error: any) {
+        throw error.response.data;
+      }
+    },
+    [getCsrfCookie]
+  );
 
-        const roles: any = responseME.data.me.roles;
-        const user: User = response.data.user;
-        const rolePermission: any = [];
-        const allPermissionLists = responseAllPermissions.data.permissions;
-        if (roles) {
-          roles.forEach((role: any) => {
-            rolePermission.push(role.permissions);
-          });
-        }
-        const permissions: Permission[] =
-          roles.length > 0
-            ? responseME.data.me.permissions.concat(roles[0].permissions)
-            : responseME.data.me.permissions;
-
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("permissions", JSON.stringify(permissions));
-        localStorage.setItem("roles", JSON.stringify(roles));
-        localStorage.setItem(
-          "allPermissions",
-          JSON.stringify(allPermissionLists)
-        );
-
+  const register = useCallback(
+    async (data: object): Promise<LoginResponse> => {
+      try {
+        await getCsrfCookie();
+        const response = await axiosInstance.post(api("register"), data);
         return response.data;
       } catch (error: any) {
         throw error.response.data;
@@ -88,7 +79,8 @@ const useAuthService = () => {
   const logout = useCallback(async () => {
     try {
       const response = await axiosInstance.delete(api("logout"));
-      localStorage.clear();
+      dispatch(SetIsLogged(false));
+      localStorage.removeItem("isLogin");
       return response.data;
     } catch (error: any) {
       throw error.response.data;
@@ -96,15 +88,15 @@ const useAuthService = () => {
   }, []);
 
   const isAuthenticated = useCallback(() => {
-    const token = localStorage.getItem("isLogin");
-    return !!token;
-  }, []);
+    return isLogged && user;
+  }, [isLogged, user]);
 
   return {
     getCsrfCookie,
     login,
+    register,
     logout,
-    isAuthenticated
+    isAuthenticated,
   };
 };
 

@@ -13,4 +13,7 @@ export default interface User {
   roles: Role | null;
   device_id: string | null;
   permission: Array<string> | null;
+  active: boolean;
+  first_name: string;
+  last_name: string;
 }

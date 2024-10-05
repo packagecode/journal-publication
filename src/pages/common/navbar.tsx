@@ -3,6 +3,8 @@ import {
   default as togglelogo,
 } from "@/assets/images/diu.png";
 import diuLogoBlack from "@/assets/images/diu_black.png";
+import { showToast } from "@/contexts/Toast";
+import useAuthService from "@/hooks/useAuthService";
 import { ThemeChanger } from "@/redux/action";
 import store from "@/redux/store";
 import { FC, Fragment, useEffect } from "react";
@@ -15,6 +17,7 @@ interface NavbarProps {}
 
 const Navbar: FC<NavbarProps> = ({ local_varaiable, ThemeChanger }: any) => {
   const location = useLocation();
+  const { isAuthenticated, logout } = useAuthService();
   const { pathname } = location;
   const Logo = pathname == "/" ? desktoplogo : diuLogoBlack;
   const LogoHeight = pathname == "/" ? "3rem" : "2.5rem";
@@ -78,6 +81,10 @@ const Navbar: FC<NavbarProps> = ({ local_varaiable, ThemeChanger }: any) => {
       ? `--primary-rgb:${local_varaiable.colorPrimaryRgb}`
       : ""
   }`;
+
+  const handleLogout = async () => {
+    await logout().then(() => showToast("success", "Logout Successful"));
+  };
 
   return (
     <Fragment>
@@ -165,15 +172,34 @@ const Navbar: FC<NavbarProps> = ({ local_varaiable, ThemeChanger }: any) => {
                   <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path>{" "}
                 </svg>
               </div>
-              <ul className="main-menu">
+              <ul className="main-menu text-uppercase">
                 <li className="slide">
                   <Link className="side-menu__item" to="/">
                     <span className="side-menu__label">Home</span>
                   </Link>
                 </li>
                 <li className="slide">
+                  <Link to="/about" className="side-menu__item">
+                    <span className="side-menu__label">About</span>
+                  </Link>
+                </li>
+                <li className="slide">
+                  <Link to="/author-instruction" className="side-menu__item">
+                    <span className="side-menu__label">
+                      Instructions for Author
+                    </span>
+                  </Link>
+                </li>
+                <li className="slide">
                   <Link to="/" className="side-menu__item">
-                    <span className="side-menu__label">About Us</span>
+                    <span className="side-menu__label">
+                      Submission Guideline
+                    </span>
+                  </Link>
+                </li>
+                <li className="slide">
+                  <Link to="/" className="side-menu__item">
+                    <span className="side-menu__label">Editorial Board</span>
                   </Link>
                 </li>
                 <li className="slide">
@@ -196,15 +222,35 @@ const Navbar: FC<NavbarProps> = ({ local_varaiable, ThemeChanger }: any) => {
               </div>
               <div className="d-lg-flex d-none">
                 <div className="btn-list d-lg-flex d-none mt-lg-2 mt-xl-0 mt-0">
-                  <Link
-                    to="/login"
-                    className="btn btn-wave btn-primary-gradient"
-                  >
-                    Sign In
-                  </Link>
-                  <Button variant="" className="btn btn-wave btn-light">
-                    Submit
-                  </Button>
+                  {isAuthenticated() && (
+                    <>
+                      <Button
+                        variant="primary-gradient"
+                        className="btn-wave"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </Button>
+
+                      <Link to="/dashboard" className="btn btn-wave btn-light">
+                        Dashboard
+                      </Link>
+                    </>
+                  )}
+
+                  {!isAuthenticated() && (
+                    <>
+                      <Link
+                        to="/login"
+                        className="btn btn-wave btn-primary-gradient"
+                      >
+                        Sign In
+                      </Link>
+                      <Button variant="" className="btn btn-wave btn-light">
+                        Submit
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </nav>

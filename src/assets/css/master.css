@@ -43,3 +43,15 @@
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.img-height {
+  height: 75px !important;
+}
+
+.footer-logo-bg {
+  background-image: url(/src/assets/images/footer_logo_bg.png);
+}
+
+.pages .dashboard {
+  background-color: var(--default-body-bg-color);
+}

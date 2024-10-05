@@ -1,9 +1,7 @@
 import Loader from "@/components/common/loader/loader";
 import TabToTop from "@/components/common/tabtotop/tabtotop";
-import store from "@/redux/store";
 import { Fragment, useEffect, useState } from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import { Provider } from "react-redux";
 import { Outlet } from "react-router-dom";
 
 function App() {
@@ -28,32 +26,30 @@ function App() {
   return (
     <Fragment>
       {isLoading && <Loader></Loader>}
-      <Provider store={store}>
-        <HelmetProvider>
-          <Helmet
-            htmlAttributes={{
-              lang: "en",
-              dir: "ltr",
-              "data-menu-styles": "dark",
-              "data-theme-mode": "light",
-              "data-nav-layout": "vertical",
-              "data-header-styles": "light",
-              "data-vertical-style": "overlay",
-              "data-loader": "disable",
-              "data-icon-text": myClassName,
-            }}
-          />
-          <div className="page">
-            <div className="main-content app-content" onClick={BodyClick}>
-              <div className="container-fluid">
-                <Outlet />
-              </div>
+      <HelmetProvider>
+        <Helmet
+          htmlAttributes={{
+            lang: "en",
+            dir: "ltr",
+            "data-menu-styles": "dark",
+            "data-theme-mode": "light",
+            "data-nav-layout": "vertical",
+            "data-header-styles": "light",
+            "data-vertical-style": "overlay",
+            "data-loader": "disable",
+            "data-icon-text": myClassName,
+          }}
+        />
+        <div className="page">
+          <div className="main-content app-content" onClick={BodyClick}>
+            <div className="container-fluid">
+              <Outlet />
             </div>
           </div>
-          <TabToTop />
-        </HelmetProvider>
-        {/* <div id="responsive-overlay"></div> */}
-      </Provider>
+        </div>
+        <TabToTop />
+      </HelmetProvider>
+      {/* <div id="responsive-overlay"></div> */}
     </Fragment>
   );
 }

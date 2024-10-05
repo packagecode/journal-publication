@@ -1,26 +1,35 @@
 import Cover from "@/assets/images/cover.png";
-import Logo from "@/assets/images/diu.png";
-import { BaseInput } from "@/components";
+import Logo from "@/assets/images/journal-logo.png";
+import { Button as BaseButton, BaseInput } from "@/components";
 import { showToast } from "@/contexts/Toast";
 import useAuthService from "@/hooks/useAuthService";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Form, ListGroup, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [validated, setValidated] = useState(false);
-  const [passwordShow1, setPasswordShow1] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [passwordFeedbackMessage, setPasswordFeedbackMessage] = useState("");
+  const [validated, setValidated] = useState<boolean>(false);
+  const [passwordShow1, setPasswordShow1] = useState<boolean>(false);
+  const [loading, setLoading] = useState({
+    author: false,
+    editor: false,
+    publisher: false,
+  });
+  const [submitButton, setSubmitButton] = useState<string>("");
   const { login, isAuthenticated } = useAuthService();
+  // const isLogged = useSelector((state: RootState) => state.isLogged);
   const navigator = useNavigate();
+  const location = useLocation();
   const [data, setData] = useState({
     email: "",
     password: "",
     remember_me: false,
   });
   const { email, password, remember_me } = data;
-
+  const [feedback, setFeedback] = useState({
+    email: "",
+    password: "",
+  });
   const changeHandler = (e: any) => {
     if (e.target.name === "remember_me") {
       setData({ ...data, [e.target.name]: e.target.checked });
@@ -38,32 +47,46 @@ const Login = () => {
     event.stopPropagation();
 
     if (event.currentTarget.checkValidity() === false) {
-      setPasswordFeedbackMessage("The Password field is required");
       setValidated(true);
       return;
     }
 
-    setLoading(true);
+    setLoading((prev) => ({ ...prev, [submitButton]: true }));
     login(email, password, remember_me)
       .then(() => {
         showToast("success", "Login Successful");
-        navigator(`/dashboards`, { replace: true });
+        navigator(`/dashboard`, { replace: true });
       })
       .catch((error) => {
-        if (error.errors && error.errors.message) {
-          console.log(error.errors.message[0]);
-          setPasswordFeedbackMessage(error.errors.message[0]);
+        if (error.message) {
+          setFeedback((prev) => ({ ...prev, email: error.message }));
         } else {
-          setPasswordFeedbackMessage("Something went wrong");
+          const { errors } = error;
+          Object.keys(errors).map((field) =>
+            errors[field].map((error: string) =>
+              setFeedback((prev) => ({ ...prev, [field]: error }))
+            )
+          );
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoading((prev) => ({ ...prev, [submitButton]: true })));
   };
 
   useEffect(() => {
-    console.log(isAuthenticated);
-    console.log(loading);
-  }, [isAuthenticated, loading]);
+    if (isAuthenticated()) {
+      navigator(`/dashboard`, { replace: true });
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (location.state) {
+      setData({
+        ...data,
+        email: location.state.email,
+        password: location.state.password,
+      });
+    }
+  }, [location.state]);
 
   return (
     <>
@@ -71,7 +94,7 @@ const Login = () => {
         <section className="section bg-light">
           <div className="container text-center">
             <div className="row justify-content-center text-center">
-              <Col xl={2}>
+              <Col xl={3}>
                 <img
                   src={Logo}
                   alt="logo"
@@ -79,7 +102,7 @@ const Login = () => {
                   style={{ height: "100px" }}
                 />
               </Col>
-              <Col xl={10} className="align-self-center">
+              <Col xl={9} className="align-self-center">
                 <h3 className="fw-semibold mb-2">
                   DIU Journal of Multidisciplinary Area
                 </h3>
@@ -121,6 +144,8 @@ const Login = () => {
                           placeholder="e.g. jone.leo@yahoo.com"
                           required={true}
                           onChange={changeHandler}
+                          feedback={feedback.email}
+                          isInvalid={!!feedback.email}
                         />
                       </Col>
                       <Col xl={12} className="mt-4 mb-3">
@@ -133,8 +158,8 @@ const Login = () => {
                           placeholder="******"
                           required={true}
                           onChange={changeHandler}
-                          feedback={passwordFeedbackMessage}
-                          isInvalid={!!passwordFeedbackMessage}
+                          feedback={feedback.password}
+                          isInvalid={!!feedback.password}
                           suffix={
                             <Button
                               variant="light"
@@ -157,27 +182,33 @@ const Login = () => {
                         xl={12}
                         className="d-flex justify-content-around mt-2 align-self-center"
                       >
-                        <Button
-                          type="button"
+                        <BaseButton
+                          type="submit"
                           variant="primary-gradient"
                           className="btn btn-wave rounded-pill"
+                          loading={loading.author}
+                          onClick={() => setSubmitButton("author")}
                         >
                           Author Login
-                        </Button>
-                        <Button
-                          type="button"
+                        </BaseButton>
+                        <BaseButton
+                          type="submit"
                           variant="primary-gradient"
                           className="btn btn-wave rounded-pill"
+                          loading={loading.editor}
+                          onClick={() => setSubmitButton("editor")}
                         >
                           Editor Login
-                        </Button>
-                        <Button
-                          type="button"
+                        </BaseButton>
+                        <BaseButton
+                          type="submit"
                           variant="primary-gradient"
                           className="btn btn-wave rounded-pill"
+                          loading={loading.publisher}
+                          onClick={() => setSubmitButton("publisher")}
                         >
                           Publisher Login
-                        </Button>
+                        </BaseButton>
                       </Col>
                     </Form>
                   </div>
