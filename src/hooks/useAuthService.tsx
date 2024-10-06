@@ -14,6 +14,12 @@ interface LoginResponse {
   };
 }
 
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+axios.defaults.headers["Accept"] = "application/json";
+axios.defaults.headers["Content-Type"] = "application/json";
+// axios.defaults.headers["X-XSRF-TOKEN"] = Cookies.get("XSRF-TOKEN");
+
 const useAuthService = () => {
   const { axiosInstance, api, csrf } = useAxiosInstance();
   const isLogged = useSelector((state: RootState) => state.isLogged);
@@ -43,31 +49,23 @@ const useAuthService = () => {
       remember_me: boolean
     ): Promise<LoginResponse> => {
       try {
-        await csrf();
-        const response = await axios.post(
-          api("login"),
-          {
+        let userData: any;
+        await csrf().then(async () => {
+          const response = await axios.post(api("login"), {
             email,
             password,
             device_name: window.navigator.userAgent,
             remember_me,
-          },
-          {
-            withCredentials: true,
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
-            },
+          });
+          const { token, user }: { user: any; token: string } = response.data;
+          if (token) {
+            localStorage.setItem("isLogin", JSON.stringify(true));
+            dispatch(SetIsLogged(true));
+            dispatch(SetUser(user));
           }
-        );
-        const { token, user }: { user: any; token: string } = response.data;
-        if (token) {
-          localStorage.setItem("isLogin", JSON.stringify(true));
-          dispatch(SetIsLogged(true));
-          dispatch(SetUser(user));
-        }
-        return response.data;
+          userData = user;
+        });
+        return userData;
       } catch (error: any) {
         throw error.response.data;
       }

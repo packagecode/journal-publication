@@ -6,6 +6,9 @@ import { RootState } from "../redux/store.tsx";
 
 const useAxiosInstance = () => {
   const apiEndPoint = useSelector((state: RootState) => state?.apiEndPoint);
+  axios.defaults.withCredentials = true;
+  axios.defaults.withXSRFToken = true;
+
   const axiosInstance: AxiosInstance = axios.create({
     withCredentials: true,
     headers: {
