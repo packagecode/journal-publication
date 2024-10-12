@@ -189,12 +189,12 @@ const Login = () => {
                       </Col>
                       <Col
                         xl={12}
-                        className="d-flex justify-content-around mt-2 align-self-center"
+                        className="d-flex justify-content-around mt-5 align-self-center"
                       >
                         <BaseButton
                           type="submit"
                           variant="primary-gradient"
-                          className="btn btn-wave rounded-pill"
+                          className="btn btn-wave"
                           loading={loading.author}
                           onClick={() => setSubmitButton("author")}
                         >
@@ -203,7 +203,7 @@ const Login = () => {
                         <BaseButton
                           type="submit"
                           variant="primary-gradient"
-                          className="btn btn-wave rounded-pill"
+                          className="btn btn-wave"
                           loading={loading.editor}
                           onClick={() => setSubmitButton("editor")}
                         >
@@ -212,7 +212,7 @@ const Login = () => {
                         <BaseButton
                           type="submit"
                           variant="primary-gradient"
-                          className="btn btn-wave rounded-pill"
+                          className="btn btn-wave "
                           loading={loading.publisher}
                           onClick={() => setSubmitButton("publisher")}
                         >

@@ -1,14 +1,19 @@
 import useAxiosInstance from "@/hooks/useAxiosInstance";
+import { SetIsFetchScriptCount } from "@/redux/action";
 import { RootState } from "@/redux/store";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 const DashboardLayout = () => {
   const panelRef = useRef<HTMLDivElement>(null);
   const user: any = useSelector((state: RootState) => state.user);
+  const isFetchScriptCount: any = useSelector(
+    (state: RootState) => state.isFetchScriptCount
+  );
   const location = useLocation();
+  const dispatch = useDispatch();
   const { axiosInstance, api } = useAxiosInstance();
   const [entitiesCount, setEntitiesCount] = useState<any>({});
 
@@ -33,6 +38,13 @@ const DashboardLayout = () => {
       );
     }
   }, []);
+
+  useEffect(() => {
+    if (isFetchScriptCount) {
+      fetchEntitiesCount();
+      dispatch(SetIsFetchScriptCount(false));
+    }
+  }, [isFetchScriptCount]);
 
   const MenuItem = ({
     path,

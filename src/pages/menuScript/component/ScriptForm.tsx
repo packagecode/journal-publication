@@ -4,12 +4,13 @@ import BaseButton from "@/components/core/BaseButton";
 import { showToast } from "@/contexts/Toast";
 import useAxiosInstance from "@/hooks/useAxiosInstance";
 // import useGlobalService from "@/hooks/useGlobalService";
+import { SetIsFetchScriptCount } from "@/redux/action";
 import { RootState } from "@/redux/store";
 import { Divider, Select, Steps } from "antd";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Accordion, Card, Col, Form, Row, Table } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import AdditionalInformation from "./AdditionalInformation";
 import AuthorsList from "./AuthorsList";
@@ -31,6 +32,7 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
   const scriptFileTypes = useSelector(
     (state: RootState) => state.scriptFileTypes
   );
+  const dispatch = useDispatch();
   const [current, setCurrent] = useState(0);
   const [stepError, setStepError] = useState({
     1: false,
@@ -248,6 +250,7 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
   useEffect(() => {
     if (loading.submitLater || loading.submitNow) {
       saveMenuScript();
+      dispatch(SetIsFetchScriptCount(true));
       if (loading.submitLater)
         navigate("/menu-script/submission-incomplete", { replace: true });
       if (loading.submitNow)

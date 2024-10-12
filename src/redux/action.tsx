@@ -1,5 +1,6 @@
 import {
   IS_LOGGED,
+  SET_FETCH_SCRIPT_COUNT,
   SET_REDIRECT_URL,
   SET_USER,
   THEME_CHANGER,
@@ -29,6 +30,12 @@ export const SetIsLogged = (value: any) => {
 export const SetRedirectUrl = (value: any) => {
   return {
     type: SET_REDIRECT_URL,
+    payload: value,
+  };
+};
+export const SetIsFetchScriptCount = (value: any) => {
+  return {
+    type: SET_FETCH_SCRIPT_COUNT,
     payload: value,
   };
 };

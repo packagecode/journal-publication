@@ -1,5 +1,6 @@
 import {
   IS_LOGGED,
+  SET_FETCH_SCRIPT_COUNT,
   SET_REDIRECT_URL,
   SET_USER,
   THEME_CHANGER,
@@ -47,6 +48,7 @@ const initialState = {
     { value: "authorship_change", label: "Authorship change form" },
   ],
   redirectUrl: "",
+  isFetchScriptCount: false,
 };
 
 export default function reducer(state = initialState, action: any) {
@@ -60,6 +62,8 @@ export default function reducer(state = initialState, action: any) {
       return { ...state, isLogged: payload };
     case SET_REDIRECT_URL:
       return { ...state, redirectUrl: payload };
+    case SET_FETCH_SCRIPT_COUNT:
+      return { ...state, isFetchScriptCount: payload };
     default:
       return state;
   }
