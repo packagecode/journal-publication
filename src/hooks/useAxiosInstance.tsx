@@ -1,22 +1,17 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
-import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import { showToast } from "../contexts/Toast.tsx";
 import { RootState } from "../redux/store.tsx";
 
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+axios.defaults.headers["Accept"] = "application/json";
+axios.defaults.headers["Content-Type"] = "application/json";
+
 const useAxiosInstance = () => {
   const apiEndPoint = useSelector((state: RootState) => state?.apiEndPoint);
-  axios.defaults.withCredentials = true;
-  axios.defaults.withXSRFToken = true;
 
-  const axiosInstance: AxiosInstance = axios.create({
-    withCredentials: true,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
-    },
-  });
+  const axiosInstance: AxiosInstance = axios.create();
 
   const csrf = async (): Promise<void> => {
     let endpoint = apiEndPoint;

@@ -60,7 +60,7 @@ const Pages: React.FC<PagesProps> = ({ pageTitle, children }) => {
       <div className="main-content landing-main">
         <div className="container-lg pt-5 pb-3">
           <Row className="justify-content-center">
-            <Col xl={8}>
+            <Col xl={10}>
               <Card
                 id="content-container"
                 className={isFullscreen ? "card-fullscreen" : "normal-content"}

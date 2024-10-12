@@ -1,4 +1,9 @@
-import { IS_LOGGED, SET_USER, THEME_CHANGER } from "./actionType.tsx";
+import {
+  IS_LOGGED,
+  SET_REDIRECT_URL,
+  SET_USER,
+  THEME_CHANGER,
+} from "./actionType.tsx";
 
 export const ThemeChanger = (value: any) => async (dispatch: any) => {
   dispatch({
@@ -17,6 +22,13 @@ export const SetUser = (value: any) => {
 export const SetIsLogged = (value: any) => {
   return {
     type: IS_LOGGED,
+    payload: value,
+  };
+};
+
+export const SetRedirectUrl = (value: any) => {
+  return {
+    type: SET_REDIRECT_URL,
     payload: value,
   };
 };

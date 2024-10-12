@@ -1,4 +1,9 @@
-import { IS_LOGGED, SET_USER, THEME_CHANGER } from "./actionType.tsx";
+import {
+  IS_LOGGED,
+  SET_REDIRECT_URL,
+  SET_USER,
+  THEME_CHANGER,
+} from "./actionType.tsx";
 
 const initialState = {
   lang: "en",
@@ -30,8 +35,18 @@ const initialState = {
     class: "",
   },
   apiEndPoint: import.meta.env.VITE_APP_API_ENDPOINT || "",
-  user: null,
+  user: { loginAs: "", roles: [] },
   isLogged: false,
+  articleTypes: [
+    { value: "original_paper", label: "Original Paper" },
+    { value: "review", label: "Review" },
+  ],
+  scriptFileTypes: [
+    { value: "manuscript", label: "Manuscript" },
+    { value: "supplementary_info", label: "Supplementary Information" },
+    { value: "authorship_change", label: "Authorship change form" },
+  ],
+  redirectUrl: "",
 };
 
 export default function reducer(state = initialState, action: any) {
@@ -43,6 +58,8 @@ export default function reducer(state = initialState, action: any) {
       return { ...state, user: payload };
     case IS_LOGGED:
       return { ...state, isLogged: payload };
+    case SET_REDIRECT_URL:
+      return { ...state, redirectUrl: payload };
     default:
       return state;
   }

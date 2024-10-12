@@ -55,3 +55,12 @@
 .pages .dashboard {
   background-color: var(--default-body-bg-color);
 }
+
+.tooltip,
+.popover {
+  z-index: 9999;
+}
+
+.ck.ck-powered-by {
+  display: none;
+}

@@ -20,7 +20,7 @@ const LandingBanner = () => {
                   journal focusing on innovations in materials-based
                   technologies
                 </p>
-                <Link to="/dashboard" className="m-1 btn btn-primary-gradient">
+                <Link to="/login" className="m-1 btn btn-primary-gradient">
                   Submit your manuscript
                   <i className="ri-arrow-right-line ms-2 align-middle"></i>
                 </Link>

@@ -3,7 +3,7 @@ import { Col, Form, FormControlProps, InputGroup, Row } from "react-bootstrap";
 
 export interface InputProps
   extends Omit<FormControlProps, "prefix" | "suffix"> {
-  label?: string;
+  label?: string | React.ReactNode;
   id?: string;
   value: string | number | string[] | undefined;
   name: string;
@@ -13,6 +13,7 @@ export interface InputProps
   prefix?: string | React.ReactNode;
   suffix?: string | React.ReactNode;
   labelPosition?: "top" | "left" | "right" | "bottom";
+  labelRow?: number;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -26,6 +27,7 @@ const Input: React.FC<InputProps> = ({
   prefix,
   suffix,
   labelPosition = "top",
+  labelRow = 2,
   ...props
 }) => {
   const defaultFeedback =
@@ -33,8 +35,11 @@ const Input: React.FC<InputProps> = ({
   const renderLabel = (position: "top" | "left" | "right" | "bottom") => {
     if (!label) return null;
     const labelElement = (
-      <Form.Label htmlFor={id ?? name} className="form-label text-default">
-        {label}
+      <Form.Label
+        htmlFor={id ?? name}
+        className={"form-label " + (required ? "text-danger" : "text-default")}
+      >
+        {label} {required && "*"}
       </Form.Label>
     );
 
@@ -42,10 +47,10 @@ const Input: React.FC<InputProps> = ({
       case "top":
         return <div>{labelElement}</div>;
       case "left":
-        return <Col sm="2">{labelElement}</Col>;
+        return <Col sm={labelRow}>{labelElement}</Col>;
       case "right":
         return (
-          <Col sm="2" className="text-end">
+          <Col sm={labelRow} className="text-end">
             {labelElement}
           </Col>
         );

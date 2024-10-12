@@ -690,7 +690,7 @@
 
     &[data-bg-img="bgimg1"] {
       // --menu-bg: url(../../images/menu-bg-images/bg-img1.jpg);
-      --menu-bg: url(./assets/imageses/menu-bg-images/bg-img1.jpg);
+      --menu-bg: url(./assets/images/menu-bg-images/bg-img1.jpg);
     }
 
     &[data-bg-img="bgimg2"] {
@@ -1424,7 +1424,6 @@
         .app-sidebar .main-sidebar-header {
           background-color: rgb(255, 255, 255);
           border-inline-end: 1px solid $menu-border-color;
-
         }
       }
 
@@ -1798,7 +1797,7 @@
   }
 }
 /* Loader Styles */
-@media (min-width:992px) {
+@media (min-width: 992px) {
   [data-nav-layout="vertical"][data-menu-styles="color"][data-nav-style="icon-click"][data-toggled="icon-click-closed"] {
     #sidebar.app-sidebar .main-sidebar-header .header-logo .toggle-logo {
       display: none;

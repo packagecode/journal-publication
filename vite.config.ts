@@ -32,5 +32,12 @@ export default defineConfig({
       },
     },
     cssCodeSplit: false, // This disables CSS code splitting
+    chunkSizeWarningLimit: 3000,
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
   },
 });

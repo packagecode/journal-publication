@@ -1,6 +1,5 @@
 import useAxiosInstance from "@/hooks/useAxiosInstance";
 import { RootState } from "@/redux/store";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,17 +13,10 @@ interface LoginResponse {
   };
 }
 
-axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
-axios.defaults.headers["Accept"] = "application/json";
-axios.defaults.headers["Content-Type"] = "application/json";
-// axios.defaults.headers["X-XSRF-TOKEN"] = Cookies.get("XSRF-TOKEN");
-
 const useAuthService = () => {
   const { axiosInstance, api, csrf } = useAxiosInstance();
   const isLogged = useSelector((state: RootState) => state.isLogged);
-  const user = useSelector((state: RootState) => state.user);
-
+  const user: any = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   const getCsrfCookie = useCallback(async (): Promise<string | undefined> => {
@@ -44,18 +36,20 @@ const useAuthService = () => {
 
   const login = useCallback(
     async (
-      email: string,
+      username: string,
       password: string,
-      remember_me: boolean
+      remember_me: boolean,
+      loginAs?: string
     ): Promise<LoginResponse> => {
       try {
         let userData: any;
         await csrf().then(async () => {
-          const response = await axios.post(api("login"), {
-            email,
+          const response = await axiosInstance.post(api("login"), {
+            username,
             password,
             device_name: window.navigator.userAgent,
             remember_me,
+            loginAs,
           });
           const { token, user }: { user: any; token: string } = response.data;
           if (token) {
@@ -97,15 +91,44 @@ const useAuthService = () => {
     }
   }, []);
 
+  const checkAvailability = useCallback(async (data: object) => {
+    try {
+      const response = await axiosInstance.post(
+        api("check-availability"),
+        data
+      );
+      return response.data;
+    } catch (error: any) {
+      throw error.response.data;
+    }
+  }, []);
+
   const isAuthenticated = useCallback(() => {
     return isLogged && user;
   }, [isLogged, user]);
+
+  const currentRole = useCallback(() => {
+    let currentRole = "";
+    if (user) {
+      let roles: any = user.roles;
+      if (roles.includes(user.loginAs)) {
+        return user.loginAs;
+      }
+      if (roles && roles.length > 0) {
+        roles = roles.map((role: any) => role.name);
+        currentRole = roles[0];
+      }
+    }
+    return currentRole;
+  }, [user]);
 
   return {
     getCsrfCookie,
     login,
     register,
     logout,
+    checkAvailability,
+    currentRole,
     isAuthenticated,
   };
 };

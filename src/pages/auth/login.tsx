@@ -3,8 +3,10 @@ import Logo from "@/assets/images/journal-logo.png";
 import { Button as BaseButton, BaseInput } from "@/components";
 import { showToast } from "@/contexts/Toast";
 import useAuthService from "@/hooks/useAuthService";
+import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Form, ListGroup, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -17,17 +19,17 @@ const Login = () => {
   });
   const [submitButton, setSubmitButton] = useState<string>("");
   const { login, isAuthenticated } = useAuthService();
-  // const isLogged = useSelector((state: RootState) => state.isLogged);
+  const redirectUrl = useSelector((state: RootState) => state.redirectUrl);
   const navigator = useNavigate();
   const location = useLocation();
   const [data, setData] = useState({
-    email: "",
+    username: "",
     password: "",
     remember_me: false,
   });
-  const { email, password, remember_me } = data;
+  const { username, password, remember_me } = data;
   const [feedback, setFeedback] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const changeHandler = (e: any) => {
@@ -52,14 +54,13 @@ const Login = () => {
     }
 
     setLoading((prev) => ({ ...prev, [submitButton]: true }));
-    login(email, password, remember_me)
+    login(username, password, remember_me, submitButton)
       .then(() => {
         showToast("success", "Login Successful");
-        navigator(`/dashboard`, { replace: true });
       })
       .catch((error) => {
         if (error.message) {
-          setFeedback((prev) => ({ ...prev, email: error.message }));
+          setFeedback((prev) => ({ ...prev, username: error.message }));
         } else {
           const { errors } = error;
           Object.keys(errors).map((field) =>
@@ -69,12 +70,14 @@ const Login = () => {
           );
         }
       })
-      .finally(() => setLoading((prev) => ({ ...prev, [submitButton]: true })));
+      .finally(() =>
+        setLoading((prev) => ({ ...prev, [submitButton]: false }))
+      );
   };
 
   useEffect(() => {
     if (isAuthenticated()) {
-      navigator(`/dashboard`, { replace: true });
+      navigator(redirectUrl ? redirectUrl : `/dashboard`, { replace: true });
     }
   }, [isAuthenticated]);
 
@@ -82,8 +85,15 @@ const Login = () => {
     if (location.state) {
       setData({
         ...data,
-        email: location.state.email,
+        username: location.state.username,
         password: location.state.password,
+      });
+    }
+    const queryParams = new URLSearchParams(location.search);
+    if (queryParams.has("username")) {
+      setData({
+        ...data,
+        username: queryParams.get("username") || "",
       });
     }
   }, [location.state]);
@@ -91,7 +101,7 @@ const Login = () => {
   return (
     <>
       <div className="main-content landing-main">
-        <section className="section bg-light">
+        <section className="section bg-primary-transparent">
           <div className="container text-center">
             <div className="row justify-content-center text-center">
               <Col xl={3}>
@@ -104,7 +114,7 @@ const Login = () => {
               </Col>
               <Col xl={9} className="align-self-center">
                 <h3 className="fw-semibold mb-2">
-                  DIU Journal of Multidisciplinary Area
+                  DIU Journal of Multidisciplinary Research
                 </h3>
               </Col>
             </div>
@@ -138,14 +148,13 @@ const Login = () => {
                         <BaseInput
                           label="Username"
                           labelPosition="left"
-                          type="email"
-                          name="email"
-                          value={email}
-                          placeholder="e.g. jone.leo@yahoo.com"
+                          name="username"
+                          value={username}
+                          placeholder="e.g. johndoe"
                           required={true}
                           onChange={changeHandler}
-                          feedback={feedback.email}
-                          isInvalid={!!feedback.email}
+                          feedback={feedback.username}
+                          isInvalid={!!feedback.username}
                         />
                       </Col>
                       <Col xl={12} className="mt-4 mb-3">
