@@ -1,3 +1,4 @@
+import BaseButton from "@/components/core/BaseButton";
 import BaseTable, {
   defaultPagination,
   formatedColumns,
@@ -9,7 +10,6 @@ import { TablePaginationConfig } from "antd";
 import moment from "moment";
 import { Fragment, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import SendMail from "../mail/sendMail";
 import AssignReviewer from "./component/AssignReviewer";
 import ViewManuscript from "./viewManuscript";
@@ -84,25 +84,57 @@ const SubmissionsProcessed = () => {
   const tableColumns = formatedColumns([
     {
       key: "action",
+      width: 180,
       render: (_row: any, record: any) => (
         <>
           <div>
-            <Link to="#" onClick={handleViewScript(record)}>
+            <BaseButton
+              variant="link"
+              className="p-0 text-primary"
+              onClick={handleViewScript(record)}
+            >
               View Manuscript
-            </Link>
+            </BaseButton>
           </div>
-          {currentRole() === "editor" && (
+          {currentRole() != "author" && (
             <div>
-              <Link to="#" onClick={assignReviewer(record)}>
-                Assign Reviewer
-              </Link>
+              <BaseButton
+                variant="link"
+                className="p-0 text-primary"
+                onClick={() => {
+                  const fileUrl = record.files?.filter(
+                    (file: any) => file.file_type === "manuscript"
+                  )[0]?.file_url;
+                  if (!fileUrl) return;
+                  window.open(fileUrl, "_blank");
+                }}
+              >
+                Download Manuscript
+              </BaseButton>
             </div>
           )}
-          <div>
-            <Link to="#" onClick={handleSendMail(record)}>
-              Send E-mail
-            </Link>
-          </div>
+          {currentRole() === "editor" && (
+            <div>
+              <BaseButton
+                variant="link"
+                className="p-0 text-primary"
+                onClick={assignReviewer(record)}
+              >
+                Assign Reviewer
+              </BaseButton>
+            </div>
+          )}
+          {currentRole() != "author" && (
+            <div>
+              <BaseButton
+                variant="link"
+                className="p-0 text-primary"
+                onClick={handleSendMail(record)}
+              >
+                Send E-mail
+              </BaseButton>
+            </div>
+          )}
         </>
       ),
     },

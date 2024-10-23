@@ -243,8 +243,8 @@ const ViewProfile: React.FC<ProfileProps> = ({
                               <div>
                                 <div className="btn-list">
                                   <BaseButton
-                                    variant=""
-                                    className="btn btn-primary-light btn-sm btn-wave"
+                                    variant="primary-transparent"
+                                    className="btn-wave"
                                   >
                                     Details
                                   </BaseButton>
@@ -276,8 +276,8 @@ const ViewProfile: React.FC<ProfileProps> = ({
                               <div>
                                 <div className="btn-list">
                                   <BaseButton
-                                    variant=""
-                                    className="btn btn-primary-light btn-sm btn-wave"
+                                    variant="primary-transparent"
+                                    className="btn-wave"
                                   >
                                     Details
                                   </BaseButton>
@@ -309,8 +309,8 @@ const ViewProfile: React.FC<ProfileProps> = ({
                               <div>
                                 <div className="btn-list">
                                   <BaseButton
-                                    variant=""
-                                    className="btn btn-primary-light btn-sm btn-wave"
+                                    variant="primary-transparent"
+                                    className="btn btn-wave"
                                   >
                                     Details
                                   </BaseButton>
@@ -342,8 +342,8 @@ const ViewProfile: React.FC<ProfileProps> = ({
                               <div>
                                 <div className="btn-list">
                                   <BaseButton
-                                    variant=""
-                                    className="btn btn-primary-light btn-sm btn-wave"
+                                    variant="primary-transparent"
+                                    className="btn btn-wave"
                                   >
                                     Details
                                   </BaseButton>
@@ -375,8 +375,8 @@ const ViewProfile: React.FC<ProfileProps> = ({
                               <div>
                                 <div className="btn-list">
                                   <BaseButton
-                                    variant=""
-                                    className="btn btn-primary-light btn-sm btn-wave"
+                                    variant="primary-transparent"
+                                    className="btn btn-wave"
                                   >
                                     Details
                                   </BaseButton>

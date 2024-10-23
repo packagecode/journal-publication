@@ -7,6 +7,7 @@ interface MainButtonProps extends ButtonProps {
   loadingPosition?: "start" | "end";
   onlyLoading?: boolean;
   children: React.ReactNode;
+  size?: "sm" | "lg";
 }
 
 const Button = React.forwardRef<HTMLButtonElement, MainButtonProps>(
@@ -16,6 +17,7 @@ const Button = React.forwardRef<HTMLButtonElement, MainButtonProps>(
       loadingPosition = "end",
       onlyLoading = false,
       children,
+      size = "sm",
       ...props
     },
     ref
@@ -34,7 +36,12 @@ const Button = React.forwardRef<HTMLButtonElement, MainButtonProps>(
     );
 
     return (
-      <MainButton ref={ref} {...props} disabled={loading || props.disabled}>
+      <MainButton
+        ref={ref}
+        {...props}
+        size={size}
+        disabled={loading || props.disabled}
+      >
         {onlyLoading && loading && loadingSpinner}
         {!onlyLoading &&
           loading &&

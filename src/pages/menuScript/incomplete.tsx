@@ -1,3 +1,4 @@
+import BaseButton from "@/components/core/BaseButton";
 import BaseTable, {
   defaultPagination,
   formatedColumns,
@@ -80,10 +81,15 @@ const IncompleteSubmission = () => {
   const tableColumns = formatedColumns([
     {
       key: "action",
+      width: 180,
       render: (_row: any, record: any) => (
         <>
           <div>
-            <Link to="/manu-script/create" state={{ manuscript: record }}>
+            <Link
+              to="/manu-script/create"
+              state={{ manuscript: record }}
+              className="text-decoration-underline text-primary"
+            >
               Edit Submission
             </Link>
           </div>
@@ -96,14 +102,20 @@ const IncompleteSubmission = () => {
               okType="default"
               onConfirm={() => handleRemoveScript(record)}
             >
-              <Link to="#">Remove Submission</Link>
+              <BaseButton variant="link" className="p-0 text-danger">
+                <span className="fs-14"> Delete Submission</span>
+              </BaseButton>
             </Popconfirm>
           </div>
           <div>
-            <Link to="#">Correspondence</Link>
+            <BaseButton variant="link" className="p-0 text-primary">
+              <span className="fs-14">Correspondence</span>
+            </BaseButton>
           </div>
           <div>
-            <Link to="#">Send E-mail</Link>
+            <BaseButton variant="link" className="p-0 text-primary">
+              <span className="fs-14">Send E-mail</span>
+            </BaseButton>
           </div>
         </>
       ),

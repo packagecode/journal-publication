@@ -70,6 +70,7 @@ const SubmissionNeedingRevision = () => {
   const tableColumns = formatedColumns([
     {
       key: "action",
+      width: 150,
       render: (_row: any, record: any) => (
         <>
           <div>

@@ -1,3 +1,4 @@
+import BaseButton from "@/components/core/BaseButton";
 import BaseTable, {
   defaultPagination,
   formatedColumns,
@@ -8,7 +9,6 @@ import { TablePaginationConfig } from "antd";
 import moment from "moment";
 import { Fragment, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import ViewManuscript from "../viewManuscript";
 import TakeReview from "./takeReview";
 
@@ -71,17 +71,26 @@ const WaitingForRevision = () => {
   const tableColumns = formatedColumns([
     {
       key: "action",
+      width: 150,
       render: (_row: any, record: any) => (
         <>
           <div>
-            <Link to="#" onClick={handleViewScript(record)}>
+            <BaseButton
+              variant="link"
+              className="p-0 text-primary"
+              onClick={handleViewScript(record)}
+            >
               View Manuscript
-            </Link>
+            </BaseButton>
           </div>
           <div>
-            <Link to="#" onClick={handleTakeReview(record)}>
+            <BaseButton
+              variant="link"
+              className="p-0 text-primary"
+              onClick={handleTakeReview(record)}
+            >
               Submit Review
-            </Link>
+            </BaseButton>
           </div>
         </>
       ),

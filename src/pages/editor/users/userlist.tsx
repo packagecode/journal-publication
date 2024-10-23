@@ -76,12 +76,14 @@ const UserLists: React.FC<UserListsProps> = ({ listForRole }) => {
         <BaseInput
           className="me-3"
           name="search"
+          size="sm"
           value={filter.name}
           placeholder="enter name ..."
           onChange={(e) => setFilter({ ...filter, name: e.target.value })}
         />
         <BaseInput
           className="me-3"
+          size="sm"
           name="institution"
           value={filter.institution}
           placeholder="enter institution name ..."
@@ -118,23 +120,52 @@ const UserLists: React.FC<UserListsProps> = ({ listForRole }) => {
     });
   };
 
+  const handleDeleteProfile = async (user: any) => {
+    await axiosInstance.delete(api(`/users/${user.id}`)).then(() => {
+      setEntities((prev: any) => {
+        return prev.filter((u: any) => u.id !== user.id);
+      });
+      showToast("success", "Profile Deleted Successfully");
+    });
+  };
+
   const tableColumns = formatedColumns([
     {
       key: "action",
       render: (_row: any, record: any) => (
         <>
           <div>
-            <Link to="#" onClick={handleOnEdit(record)}>
+            <BaseButton
+              variant="link"
+              className="p-0 text-primary"
+              onClick={handleOnEdit(record)}
+            >
               Edit Profile
-            </Link>
+            </BaseButton>
           </div>
           <div>
-            <Link
-              to="#"
-              onClick={() => [setCurrentEntity(record), setVisibleMail(true)]}
+            <BaseButton
+              variant="link"
+              className="p-0 text-primary"
+              onClick={() => {
+                setCurrentEntity(record), setVisibleMail(true);
+              }}
             >
               Send E-mail
-            </Link>
+            </BaseButton>
+          </div>
+          <div>
+            <Popconfirm
+              title="Are you sure you want to delete this profile?"
+              icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+              okText="Yes, Delete"
+              okButtonProps={{ className: "btn-info-transparent" }}
+              onConfirm={() => handleDeleteProfile(record)}
+            >
+              <BaseButton variant="link" className="p-0 text-danger">
+                Delete Profile
+              </BaseButton>
+            </Popconfirm>
           </div>
         </>
       ),
@@ -143,9 +174,10 @@ const UserLists: React.FC<UserListsProps> = ({ listForRole }) => {
       key: "username",
       render: (username: string, record: any) => {
         return (
-          <BaseTooltip content="View Profile" className="tooltip-success">
+          <BaseTooltip content="View Profile" className="tooltip-primary">
             <BaseButton
               variant="link"
+              className="p-0 text-primary"
               onClick={() => {
                 setCurrentEntity(record);
                 setVisibleProfile(true);
@@ -179,20 +211,20 @@ const UserLists: React.FC<UserListsProps> = ({ listForRole }) => {
     {
       key: "phone",
     },
-    {
-      title: "Institution",
-      key: "institution_info",
-      render: (institution_info: any) => {
-        return (
-          <div>
-            <div>{institution_info?.position}</div>
-            <div>{institution_info?.department}</div>
-            <Link to="#">{institution_info?.name}</Link>
-            <div>{institution_info?.country}</div>
-          </div>
-        );
-      },
-    },
+    // {
+    //   title: "Institution",
+    //   key: "institution_info",
+    //   render: (institution_info: any) => {
+    //     return (
+    //       <div>
+    //         <div>{institution_info?.position}</div>
+    //         <div>{institution_info?.department}</div>
+    //         <Link to="#">{institution_info?.name}</Link>
+    //         <div>{institution_info?.country}</div>
+    //       </div>
+    //     );
+    //   },
+    // },
     // {
     //   title: "Created Date",
     //   key: "created_at",
@@ -238,7 +270,6 @@ const UserLists: React.FC<UserListsProps> = ({ listForRole }) => {
           <Card.Title>{capitalize(listForRole)}s List</Card.Title>
           <BaseButton
             variant="primary-gradient"
-            size="sm"
             onClick={() => {
               setCurrentEntity(undefined);
               setVisible(true);
@@ -250,6 +281,7 @@ const UserLists: React.FC<UserListsProps> = ({ listForRole }) => {
         <Card.Body className="p-0">
           <BaseTable
             title={tableHeaders}
+            scroll={{ x: 800 }}
             loading={loading}
             dataSource={entities}
             columns={tableColumns}

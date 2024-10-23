@@ -132,7 +132,6 @@ const AuthorsList: React.FC<ComponentProps> = ({ currentScript }) => {
         <Card.Header className="justify-content-between">
           <Card.Title>Current Author List</Card.Title>
           <BaseButton
-            size="sm"
             variant="outline-light"
             onClick={() => {
               setCurrentEntity(null);
@@ -155,7 +154,6 @@ const AuthorsList: React.FC<ComponentProps> = ({ currentScript }) => {
                   <tr key={`author_${index}`}>
                     <td scope="col" width="20%">
                       <BaseButton
-                        size="sm"
                         variant="primary-transparent"
                         className="btn btn-icon rounded-pill btn-wave me-4"
                         onClick={() => {
@@ -167,7 +165,6 @@ const AuthorsList: React.FC<ComponentProps> = ({ currentScript }) => {
                       </BaseButton>
                       {!author.corresponding_author && (
                         <BaseButton
-                          size="sm"
                           variant="danger-transparent"
                           className="btn btn-icon rounded-pill btn-wave"
                           onClick={handleDelete(author.id)}

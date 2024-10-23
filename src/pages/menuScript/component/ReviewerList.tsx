@@ -43,7 +43,6 @@ const ReviewerList: React.FC<ComponentProps> = ({ currentScript }) => {
         <Card.Header className="justify-content-between">
           <Card.Title>Currently Opposed Reviewers List</Card.Title>
           <BaseButton
-            size="sm"
             variant="outline-light"
             onClick={() => {
               setCurrentEntity(null);
@@ -66,7 +65,6 @@ const ReviewerList: React.FC<ComponentProps> = ({ currentScript }) => {
                   <tr key={`reviewer_${index}`}>
                     <td scope="col">
                       <BaseButton
-                        size="sm"
                         variant="primary-transparent"
                         className="btn btn-icon rounded-pill btn-wave me-4"
                         onClick={() => {
@@ -77,7 +75,6 @@ const ReviewerList: React.FC<ComponentProps> = ({ currentScript }) => {
                         <i className="ri-edit-line"></i>
                       </BaseButton>
                       <BaseButton
-                        size="sm"
                         variant="danger-transparent"
                         className="btn btn-icon rounded-pill btn-wave"
                         onClick={handleDelete(reviewer.id)}

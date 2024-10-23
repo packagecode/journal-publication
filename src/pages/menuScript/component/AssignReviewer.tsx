@@ -7,7 +7,8 @@ import BaseTable, { formatedColumns } from "@/components/tables/BaseTable";
 import { showToast } from "@/contexts/Toast";
 import useAxiosInstance from "@/hooks/useAxiosInstance";
 import SendMail from "@/pages/mail/sendMail";
-import { Divider } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Divider, Popconfirm } from "antd";
 import { useEffect, useState } from "react";
 import { Card, Form } from "react-bootstrap";
 
@@ -144,7 +145,10 @@ const AssignReviewer: React.FC<AssignReviewerProps> = ({
       <BaseModal
         title={
           <div className="d-flex justify-content-start">
-            <div>Assign Reviewer for {currentEntity?.script_number}</div>
+            <div>
+              Assign Reviewer for Manuscript Number -{" "}
+              {currentEntity?.script_number}
+            </div>
           </div>
         }
         show={visible}
@@ -156,13 +160,11 @@ const AssignReviewer: React.FC<AssignReviewerProps> = ({
         body={
           <>
             <Card className="custom-card">
-              <Card.Header className="justify-content-between">
-                <Card.Title>
-                  {assignedReviewer.length > 0
-                    ? "Already Assign Reviewer's"
-                    : "Assign Reviewer's"}
-                </Card.Title>
-              </Card.Header>
+              {assignedReviewer.length > 0 && (
+                <Card.Header className="justify-content-between">
+                  <Card.Title>Already Assign Reviewer's</Card.Title>
+                </Card.Header>
+              )}
               <Card.Body className="card-body p-0">
                 {assignedReviewer.length > 0 && (
                   <div className="mb-5">
@@ -188,7 +190,6 @@ const AssignReviewer: React.FC<AssignReviewerProps> = ({
                               <div className="d-flex justify-content-around">
                                 <BaseButton
                                   variant="primary-transparent"
-                                  size="sm"
                                   onClick={() => {
                                     setVisibleMail(true);
                                     setCurrentReviewer(record);
@@ -197,16 +198,28 @@ const AssignReviewer: React.FC<AssignReviewerProps> = ({
                                   Send E-mail
                                 </BaseButton>
                                 {record.status === "pending" && (
-                                  <BaseButton
-                                    variant="danger-transparent"
-                                    size="sm"
-                                    onClick={() =>
+                                  <Popconfirm
+                                    title="Are you sure to remove this reviewer?"
+                                    icon={
+                                      <QuestionCircleOutlined
+                                        style={{ color: "red" }}
+                                      />
+                                    }
+                                    okText="Yes, Delete"
+                                    okButtonProps={{
+                                      className: "btn-info-transparent",
+                                    }}
+                                    onConfirm={() =>
                                       removeAssignedReviewer(record)
                                     }
-                                    loading={record.loading}
                                   >
-                                    Remove
-                                  </BaseButton>
+                                    <BaseButton
+                                      variant="danger-transparent"
+                                      loading={record.loading}
+                                    >
+                                      Remove
+                                    </BaseButton>
+                                  </Popconfirm>
                                 )}
                               </div>
                             );
@@ -227,45 +240,46 @@ const AssignReviewer: React.FC<AssignReviewerProps> = ({
                   placeholder="Select Reviewer"
                   onChange={handleChangeReviewer}
                 />
-                <Divider orientation="left">Selected Reviewer's</Divider>
-                <BaseTable
-                  scroll={{ x: 500 }}
-                  dataSource={reviewers}
-                  columns={formatedColumns([
-                    {
-                      key: "SI",
-                      render: (_row: any, _record: any, index: number) =>
-                        index + 1,
-                    },
-                    {
-                      key: "action",
-                      render: (_row: any, record: any) => (
-                        <>
-                          <div>
-                            <BaseButton
-                              size="sm"
-                              variant="danger-transparent"
-                              onClick={() => handleRemove(record)}
-                            >
-                              Remove
-                            </BaseButton>
-                          </div>
-                        </>
-                      ),
-                    },
-                    { title: "Reviewer Name", key: "label" },
-                  ])}
-                  pagination={false}
-                />
                 {reviewers.length > 0 && (
                   <>
+                    <Divider orientation="left">Selected Reviewer's</Divider>
+                    <BaseTable
+                      scroll={{ x: 500 }}
+                      dataSource={reviewers}
+                      columns={formatedColumns([
+                        {
+                          key: "SI",
+                          render: (_row: any, _record: any, index: number) =>
+                            index + 1,
+                        },
+                        {
+                          key: "action",
+                          render: (_row: any, record: any) => (
+                            <>
+                              <div>
+                                <BaseButton
+                                  variant="danger-transparent"
+                                  onClick={() => handleRemove(record)}
+                                >
+                                  Remove
+                                </BaseButton>
+                              </div>
+                            </>
+                          ),
+                        },
+                        { title: "Reviewer Name", key: "label" },
+                      ])}
+                      pagination={false}
+                    />
+
                     <Form.Label className="form-label mt-4">
                       Mail Body
                       <span className="text-danger">*</span>
                     </Form.Label>
                     <div className="text-center">
-                      Available Variable : <b>[Reviewer’s Name]</b> &nbsp;{" "}
-                      <b>[Manuscript Title]</b> &nbsp; <b>[Manuscript ID]</b>{" "}
+                      Available Variable : <b>[Reviewer’s Name]</b> &nbsp;
+                      <b>[Manuscript Title]</b> &nbsp; <b>[Manuscript ID]</b>
+                      &nbsp; <b>[Abstract]</b>
                     </div>
                     <div className="mb-3 border border-primary">
                       <TextEditor
@@ -276,17 +290,26 @@ const AssignReviewer: React.FC<AssignReviewerProps> = ({
                   </>
                 )}
               </Card.Body>
-              <Card.Footer>
-                <div className="d-flex justify-content-around col-md-4 col-12">
-                  <BaseButton
-                    variant="primary-gradient"
-                    loading={loading}
-                    onClick={handleSubmit}
-                  >
-                    Assign Now
-                  </BaseButton>
-                </div>
-              </Card.Footer>
+              {reviewers.length > 0 && (
+                <Card.Footer>
+                  <div className="d-flex justify-content-start col-md-4 col-12">
+                    <Popconfirm
+                      title="Are you sure to assign this reviewer?"
+                      icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+                      okText="Yes, Assign"
+                      cancelText="No"
+                      okButtonProps={{
+                        className: "btn-info-transparent",
+                      }}
+                      onConfirm={handleSubmit}
+                    >
+                      <BaseButton variant="primary-gradient" loading={loading}>
+                        Assign Reviewer
+                      </BaseButton>
+                    </Popconfirm>
+                  </div>
+                </Card.Footer>
+              )}
             </Card>
             <SendMail
               visible={visibleMail}

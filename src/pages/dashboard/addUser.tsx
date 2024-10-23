@@ -214,7 +214,7 @@ const AddUser: React.FC<AddUserProps> = ({
       .then((response) => {
         showToast("success", "User has been created successfully");
         const { user } = response.data;
-        if (user.roles.includes(createRole)) {
+        if (user.roles.find((role: any) => role.name === createRole)) {
           onCreated && onCreated(user);
         }
         handleFormReset();

@@ -96,8 +96,8 @@ const FundingSource: React.FC<ComponentProps> = ({
                 className="tooltip-primary"
               >
                 <BaseButton
-                  variant="outline-primary me-3"
-                  size="sm"
+                  variant="outline-primary"
+                  className="me-3"
                   onClick={() => handleUpdate()}
                 >
                   <i className="ri-save-line"></i>
@@ -108,8 +108,8 @@ const FundingSource: React.FC<ComponentProps> = ({
                 className="tooltip-danger"
               >
                 <BaseButton
-                  variant="outline-danger me-3"
-                  size="sm"
+                  variant="outline-danger"
+                  className="me-3"
                   onClick={() => handleDelete()}
                 >
                   <i className="ri-delete-bin-line"></i>
@@ -124,8 +124,8 @@ const FundingSource: React.FC<ComponentProps> = ({
                 className="tooltip-primary"
               >
                 <BaseButton
-                  variant="outline-primary me-3"
-                  size="sm"
+                  variant="outline-primary"
+                  className="me-3"
                   onClick={() => handleSave()}
                 >
                   <i className="ri-save-line"></i>
@@ -136,8 +136,8 @@ const FundingSource: React.FC<ComponentProps> = ({
                 className="tooltip-primary"
               >
                 <BaseButton
-                  variant="outline-primary me-3"
-                  size="sm"
+                  variant="outline-primary"
+                  className="me-3"
                   onClick={() => handleSave(true)}
                 >
                   <i className="ri-file-add-line"></i>
@@ -146,7 +146,6 @@ const FundingSource: React.FC<ComponentProps> = ({
               <BaseTooltip content="Clear form" className="tooltip-danger">
                 <BaseButton
                   variant="outline-danger"
-                  size="sm"
                   onClick={() => setFormData(formInitialValues)}
                 >
                   <i className="ri-refresh-line"></i>

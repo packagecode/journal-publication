@@ -9,7 +9,6 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Popconfirm, TablePaginationConfig } from "antd";
 import { Fragment, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import ViewManuscript from "./viewManuscript";
 
 const RequestForReview = () => {
@@ -78,6 +77,7 @@ const RequestForReview = () => {
   const tableColumns = formatedColumns([
     {
       key: "action",
+      width: 150,
       render: (_row: any, record: any) => (
         <>
           <div className="mb-3">
@@ -88,11 +88,7 @@ const RequestForReview = () => {
               okButtonProps={{ className: "btn-success-transparent" }}
               onConfirm={() => handleStatusAction(record, "accepted")}
             >
-              <BaseButton
-                variant="primary-transparent"
-                size="sm"
-                className="me-2"
-              >
+              <BaseButton variant="primary-transparent" className="me-2">
                 Accept
               </BaseButton>
             </Popconfirm>
@@ -103,15 +99,17 @@ const RequestForReview = () => {
               okButtonProps={{ className: "btn-success-transparent" }}
               onConfirm={() => handleStatusAction(record, "rejected")}
             >
-              <BaseButton variant="danger-transparent" size="sm">
-                Reject
-              </BaseButton>
+              <BaseButton variant="danger-transparent">Reject</BaseButton>
             </Popconfirm>
           </div>
           <div>
-            <Link to="#" onClick={() => handleViewScript(record)}>
+            <BaseButton
+              variant="link"
+              className="p-0 text-primary"
+              onClick={() => handleViewScript(record)}
+            >
               View Manuscript
-            </Link>
+            </BaseButton>
           </div>
         </>
       ),

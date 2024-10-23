@@ -471,7 +471,7 @@ const Profile = () => {
             <Card.Footer className="card-footer">
               <div>
                 <BaseButton
-                  variant="outline-primary"
+                  variant="primary-gradient"
                   className="btn float-end btn-wave"
                   type="submit"
                   loading={loading}

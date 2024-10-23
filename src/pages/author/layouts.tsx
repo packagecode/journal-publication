@@ -84,7 +84,7 @@ const DashboardLayout = () => {
                 <Card className="custom-card" ref={panelRef}>
                   <Card.Header>
                     <Card.Title>
-                      <Link to="/dashboard">Dashboard</Link>
+                      <Link to="/dashboard">Author Dashboard</Link>
                     </Card.Title>
                   </Card.Header>
                   <Card.Body className="p-0">

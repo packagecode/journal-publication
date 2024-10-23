@@ -359,7 +359,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                   </Card.Body>
                   <Card.Footer className="d-flex justify-content-end">
                     <BaseButton
-                      size="sm"
                       variant="primary-gradient"
                       className="fs-5"
                       onClick={nextStep}
@@ -450,7 +449,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                         <td>{moment(file.updated_at).format("DD MMM YYYY")}</td>
                         <td>
                           <BaseButton
-                            size="sm"
                             variant="primary-transparent"
                             className="btn btn-icon rounded-pill btn-wave me-2"
                             onClick={() => window.open(file.file_url)}
@@ -473,7 +471,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
               </Col>
               <div className="d-flex justify-content-end mt-5">
                 <BaseButton
-                  size="sm"
                   variant="primary-transparent"
                   className="fs-6 me-3"
                   onClick={prevStep}
@@ -482,7 +479,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                   <span>Back</span>
                 </BaseButton>
                 <BaseButton
-                  size="sm"
                   variant="primary-gradient"
                   className="fs-5"
                   onClick={nextStep}
@@ -523,7 +519,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                 </Accordion>
                 <div className="d-flex justify-content-end mt-3">
                   <BaseButton
-                    size="sm"
                     variant="primary-transparent"
                     className="fs-6 me-3"
                     onClick={prevStep}
@@ -532,7 +527,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                     <span>Back</span>
                   </BaseButton>
                   <BaseButton
-                    size="sm"
                     variant="primary-gradient"
                     className="fs-5"
                     onClick={nextStep}
@@ -557,7 +551,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
               />
               <div className="d-flex justify-content-end mt-3">
                 <BaseButton
-                  size="sm"
                   variant="primary-transparent"
                   className="fs-6 me-3"
                   onClick={prevStep}
@@ -566,7 +559,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                   <span>Back</span>
                 </BaseButton>
                 <BaseButton
-                  size="sm"
                   variant="primary-gradient"
                   className="fs-5"
                   onClick={nextStep}
@@ -616,7 +608,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                 </Accordion>
                 <div className="d-flex justify-content-end mt-3">
                   <BaseButton
-                    size="sm"
                     variant="primary-transparent"
                     className="fs-6 me-3"
                     onClick={prevStep}
@@ -625,7 +616,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                     <span>Back</span>
                   </BaseButton>
                   <BaseButton
-                    size="sm"
                     variant="primary-gradient"
                     className="fs-5"
                     onClick={nextStep}
@@ -673,7 +663,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                         }}
                       /> */}
                       <BaseButton
-                        size="sm"
                         variant="primary-transparent"
                         className="float-end"
                         onClick={() => setCurrentAccordian(1)}
@@ -703,7 +692,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                         />
                       </div>
                       <BaseButton
-                        size="sm"
                         variant="primary-transparent"
                         className="float-end"
                         onClick={() => setCurrentAccordian(2)}
@@ -718,7 +706,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                     <Accordion.Body>
                       <AuthorsList currentScript={currentScript} />
                       <BaseButton
-                        size="sm"
                         variant="primary-transparent"
                         className="float-end"
                         onClick={() => setCurrentAccordian(3)}
@@ -750,7 +737,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                 </Accordion>
                 <div className="d-flex justify-content-end mt-3">
                   <BaseButton
-                    size="sm"
                     variant="primary-transparent"
                     className="fs-6 me-3"
                     onClick={prevStep}
@@ -759,7 +745,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                     <span>Back</span>
                   </BaseButton>
                   <BaseButton
-                    size="sm"
                     variant="primary-gradient"
                     className="fs-6 me-3"
                     onClick={saveSubmitLater}
@@ -768,7 +753,6 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
                     <span>Save & Submit Later</span>
                   </BaseButton>
                   <BaseButton
-                    size="sm"
                     variant="primary-gradient"
                     className="fs-6"
                     onClick={nextStep}

@@ -41,7 +41,7 @@ const BaseTable: React.FC<DynamicTableProps> = React.memo((props) => {
     columns,
     dataSource,
     selectionRow,
-    scroll = { x: 1024 },
+    scroll = { x: 800 },
     size = "small",
     onSelectedRowsChange,
     ...restProps

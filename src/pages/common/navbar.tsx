@@ -228,11 +228,15 @@ const Navbar: FC<NavbarProps> = ({ local_varaiable, ThemeChanger }: any) => {
                         variant="primary-gradient"
                         className="btn-wave"
                         onClick={handleLogout}
+                        size="sm"
                       >
                         Logout
                       </Button>
 
-                      <Link to="/dashboard" className="btn btn-wave btn-light">
+                      <Link
+                        to="/dashboard"
+                        className="btn btn-sm btn-wave btn-light"
+                      >
                         Dashboard
                       </Link>
                     </>
@@ -242,13 +246,16 @@ const Navbar: FC<NavbarProps> = ({ local_varaiable, ThemeChanger }: any) => {
                     <>
                       <Link
                         to="/login"
-                        className="btn btn-wave btn-primary-gradient"
+                        className="btn btn-sm btn-wave btn-primary-gradient"
                       >
                         Sign In
                       </Link>
-                      <Button variant="" className="btn btn-wave btn-light">
+                      <Link
+                        to="/login"
+                        className="btn btn-sm btn-wave btn-light"
+                      >
                         Submit
-                      </Button>
+                      </Link>
                     </>
                   )}
                 </div>
