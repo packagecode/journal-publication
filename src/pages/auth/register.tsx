@@ -32,7 +32,7 @@ const Register = () => {
     phone: "",
     password: "",
     password_confirmation: "",
-    is_reviewer: false,
+    as_reviewer: false,
   });
   const [personalInfo, setPersonalInfo] = useState({
     degree: "",
@@ -76,6 +76,15 @@ const Register = () => {
   const handleCheckAvailability = async () => {
     const { username } = formData;
     if (!username) return;
+    if (!/^[a-zA-Z0-9_]*$/.test(username)) {
+      setFeedback((prev) => ({
+        ...prev,
+        username: "Username should not contain special characters or spaces",
+      }));
+      return;
+    } else {
+      setFeedback((prev) => ({ ...prev, username: "" }));
+    }
     await checkAvailability({ username }).then((response) => {
       if (response.username) {
         setFeedback((prev) => ({ ...prev, username: "" }));
@@ -616,28 +625,28 @@ const Register = () => {
                               <div className="d-flex justify-content-around">
                                 <Form.Check
                                   type="radio"
-                                  name="is_reviewer"
-                                  id="is_reviewer_yes"
+                                  name="as_reviewer"
+                                  id="as_reviewer_yes"
                                   className="form-check-md"
-                                  defaultChecked={formData.is_reviewer}
+                                  defaultChecked={formData.as_reviewer}
                                   onClick={() => {
                                     setFormData((prev) => ({
                                       ...prev,
-                                      is_reviewer: true,
+                                      as_reviewer: true,
                                     }));
                                   }}
                                   label="Yes"
                                 />
                                 <Form.Check
                                   type="radio"
-                                  name="is_reviewer"
-                                  id="is_reviewer_no"
+                                  name="as_reviewer"
+                                  id="as_reviewer_no"
                                   className="form-check-md"
-                                  defaultChecked={!formData.is_reviewer}
+                                  defaultChecked={!formData.as_reviewer}
                                   onClick={() => {
                                     setFormData((prev) => ({
                                       ...prev,
-                                      is_reviewer: false,
+                                      as_reviewer: false,
                                     }));
                                   }}
                                   label="No"

@@ -2,7 +2,6 @@ import BaseTable, {
   defaultPagination,
   formatedColumns,
 } from "@/components/tables/BaseTable";
-import useAuthService from "@/hooks/useAuthService";
 import useAxiosInstance from "@/hooks/useAxiosInstance";
 import useGlobalService from "@/hooks/useGlobalService";
 import { TablePaginationConfig } from "antd";
@@ -10,30 +9,29 @@ import moment from "moment";
 import { Fragment, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import SendMail from "../mail/sendMail";
-import AssignReviewer from "./component/AssignReviewer";
-import ViewManuscript from "./viewManuscript";
+import ViewManuscript from "../viewManuscript";
+import TakeReview from "./takeReview";
 
-const SubmissionsProcessed = () => {
+const WaitingForRevision = () => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [visibleReviewer, setVisibleReviewer] = useState(false);
+  const [visibleTakeReview, setVisibleTakeReview] = useState(false);
   const [entities, setEntities] = useState([]);
   const [currentEntity, setCurrentEntity] = useState<any>();
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     ...defaultPagination(),
     position: ["bottomCenter"],
   });
-  const { currentRole } = useAuthService();
   const { axiosInstance, api } = useAxiosInstance();
   const { sanitizeHtml } = useGlobalService();
-  const [visibleMail, setVisibleMail] = useState(false);
 
   const fetchEntities = async (page: number, pageSize: number) => {
     setLoading(true);
     await axiosInstance
       .get(
-        api(`manuscripts?status=submitted&page=${page}&per_page=${pageSize}`)
+        api(
+          `manuscripts?status=submitted&reviewStatus=accepted&page=${page}&per_page=${pageSize}`
+        )
       )
       .then((response) => {
         const { current_page, data, total, per_page } =
@@ -60,25 +58,14 @@ const SubmissionsProcessed = () => {
     fetchEntities(pagination.current!, pagination.pageSize!);
   };
 
-  const tableHeaders = () => {
-    return (
-      <div className="d-flex justify-content-between align-items-center"></div>
-    );
-  };
-
   const handleViewScript = (record: any) => () => {
     setCurrentEntity(record);
     setVisible(true);
   };
 
-  const assignReviewer = (record: any) => () => {
+  const handleTakeReview = (record: any) => () => {
     setCurrentEntity(record);
-    setVisibleReviewer(true);
-  };
-
-  const handleSendMail = (record: any) => () => {
-    setCurrentEntity(record);
-    setVisibleMail(true);
+    setVisibleTakeReview(true);
   };
 
   const tableColumns = formatedColumns([
@@ -91,16 +78,9 @@ const SubmissionsProcessed = () => {
               View Manuscript
             </Link>
           </div>
-          {currentRole() === "editor" && (
-            <div>
-              <Link to="#" onClick={assignReviewer(record)}>
-                Assign Reviewer
-              </Link>
-            </div>
-          )}
           <div>
-            <Link to="#" onClick={handleSendMail(record)}>
-              Send E-mail
+            <Link to="#" onClick={handleTakeReview(record)}>
+              Submit Review
             </Link>
           </div>
         </>
@@ -122,12 +102,6 @@ const SubmissionsProcessed = () => {
       key: "created_at",
       render: (text: string) => moment(text).format("DD MMM YYYY"),
     },
-    {
-      title: "Status Date",
-      key: "latest_status",
-      render: (latest_status: any) =>
-        moment(latest_status.created_at).format("DD MMM YYYY"),
-    },
     { title: "Current Status", key: "status" },
   ]);
 
@@ -139,11 +113,10 @@ const SubmissionsProcessed = () => {
     <Fragment>
       <Card className="custom-card overflow-hidden dashboard-right-panel">
         <Card.Header className="justify-content-between">
-          <Card.Title>Submissions Being Processed</Card.Title>
+          <Card.Title>Submission Needing Revision</Card.Title>
         </Card.Header>
         <Card.Body className="p-0">
           <BaseTable
-            title={tableHeaders}
             loading={loading}
             dataSource={entities}
             columns={tableColumns}
@@ -159,22 +132,18 @@ const SubmissionsProcessed = () => {
           onClose={() => setVisible(false)}
         />
       )}
-      {visibleReviewer && (
-        <AssignReviewer
-          visible={visibleReviewer}
+      {visibleTakeReview && (
+        <TakeReview
+          visible={visibleTakeReview}
           currentEntity={currentEntity}
-          onClose={() => setVisibleReviewer(false)}
-        />
-      )}
-      {visibleMail && (
-        <SendMail
-          visible={visibleMail}
-          onClose={() => setVisibleMail(false)}
-          emails={[currentEntity?.user?.email]}
+          onClose={() => {
+            setVisibleTakeReview(false);
+            fetchEntities(pagination.current!, pagination.pageSize!);
+          }}
         />
       )}
     </Fragment>
   );
 };
 
-export default SubmissionsProcessed;
+export default WaitingForRevision;

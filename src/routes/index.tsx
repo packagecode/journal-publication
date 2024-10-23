@@ -2,12 +2,18 @@ import PrivateRoutes from "@/components/PrivateRoute/PrivateRoute";
 import RoleWiseLayout from "@/components/RoleWiseLayout";
 import Login from "@/pages/auth/login";
 import Register from "@/pages/auth/register";
-import Profile from "@/pages/author/profile";
-import Users from "@/pages/editor/users";
+import Profile from "@/pages/dashboard/profile";
+import Authors from "@/pages/editor/users/authors";
+import Editors from "@/pages/editor/users/editors";
+import Reviewers from "@/pages/editor/users/reviewers";
 import NotFound from "@/pages/error/error404";
+import GlobalDashboardManager from "@/pages/layouts/dashboard";
 import PublicLayout from "@/pages/layouts/public";
 import MenuScriptCreate from "@/pages/menuScript/create";
 import IncompleteSubmission from "@/pages/menuScript/incomplete";
+import RequestForReview from "@/pages/menuScript/requestForReview";
+import SubmissionNeedingRevision from "@/pages/menuScript/revision/submissionNeedingRevision";
+import WaitingForRevision from "@/pages/menuScript/revision/waitingForRevision";
 import SubmissionsProcessed from "@/pages/menuScript/submissionProcessed";
 import About from "@/pages/public/about";
 import AuthorInstruction from "@/pages/public/authorInstruction";
@@ -16,7 +22,6 @@ import HomePage from "@/pages/public/index";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { BASE_URL } from "../main";
 import App from "../pages/App";
-import GlobalDashboardManager from "../pages/layouts/dashboard";
 
 const AppRoutes = () => {
   return (
@@ -33,24 +38,19 @@ const AppRoutes = () => {
         <Route path={`${BASE_URL}register`} element={<Register />} />
         <Route path={BASE_URL} element={<PrivateRoutes />}>
           <Route path="" element={<RoleWiseLayout />}>
-            <Route
-              path="dashboard"
-              element={<GlobalDashboardManager />}
-            ></Route>
-            <Route path="profile" element={<Profile />}></Route>
-            <Route
-              path="menu-script/create"
-              element={<MenuScriptCreate />}
-            ></Route>
-            <Route
-              path="menu-script/submission-incomplete"
-              element={<IncompleteSubmission />}
-            ></Route>
-            <Route
-              path="menu-script/submission-processed"
-              element={<SubmissionsProcessed />}
-            ></Route>
-            <Route path="users" element={<Users />}></Route>
+            <Route path="dashboard" element={<GlobalDashboardManager />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="manu-script">
+              <Route path="create" element={<MenuScriptCreate />} />
+              <Route path="submission-incomplete" element={<IncompleteSubmission />} />
+              <Route path="submission-processed" element={<SubmissionsProcessed />} />
+              <Route path="submission-needing-revision" element={<SubmissionNeedingRevision />} />
+              <Route path="request-for-review" element={<RequestForReview />} />
+              <Route path="waiting-for-revision" element={<WaitingForRevision />} />
+            </Route>
+            <Route path="reviewers" element={<Reviewers />} />
+            <Route path="authors" element={<Authors />} />
+            <Route path="editors" element={<Editors />} />
           </Route>
           {/* <Route path="editor" element={<EditorDashboard />}>
             <Route path="dashboard" element={<Profile />}></Route>

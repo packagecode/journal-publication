@@ -28,10 +28,24 @@ const useGlobalService = () => {
       .join(" "); // Join the words with spaces
   };
 
+  const toQueryString = (obj: { [key: string]: any }): string => {
+    return "?".concat(
+      Object.keys(obj)
+        .map((key) =>
+          obj[key] || obj[key] === 0
+            ? `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`
+            : null
+        )
+        .filter((item) => item !== null)
+        .join("&")
+    );
+  };
+
   return {
     sanitizeHtml,
     numberToOrdinal,
     formatString,
+    toQueryString,
   };
 };
 

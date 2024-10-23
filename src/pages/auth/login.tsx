@@ -15,7 +15,7 @@ const Login = () => {
   const [loading, setLoading] = useState({
     author: false,
     editor: false,
-    publisher: false,
+    reviewer: false,
   });
   const [submitButton, setSubmitButton] = useState<string>("");
   const { login, isAuthenticated } = useAuthService();
@@ -213,10 +213,10 @@ const Login = () => {
                           type="submit"
                           variant="primary-gradient"
                           className="btn btn-wave "
-                          loading={loading.publisher}
-                          onClick={() => setSubmitButton("publisher")}
+                          loading={loading.reviewer}
+                          onClick={() => setSubmitButton("reviewer")}
                         >
-                          Publisher Login
+                          Reviewer Login
                         </BaseButton>
                       </Col>
                     </Form>

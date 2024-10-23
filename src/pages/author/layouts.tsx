@@ -100,7 +100,7 @@ const DashboardLayout = () => {
                           </span>
                         </li>
                         <MenuItem
-                          path="/menu-script/create"
+                          path="/manu-script/create"
                           label="Submit New Manuscript"
                         />
                         <MenuItem
@@ -110,7 +110,7 @@ const DashboardLayout = () => {
                           )})`}
                         />
                         <MenuItem
-                          path="/menu-script/submission-incomplete"
+                          path="/manu-script/submission-incomplete"
                           label={`Incomplete Submissions (${getCount(
                             "incomplete"
                           )})`}
@@ -122,7 +122,7 @@ const DashboardLayout = () => {
                           )})`}
                         />
                         <MenuItem
-                          path="/menu-script/submission-processed"
+                          path="/manu-script/submission-processed"
                           label={`Submissions Being Processed (${getCount(
                             "submitted"
                           )})`}

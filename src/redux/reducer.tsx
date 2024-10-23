@@ -49,6 +49,11 @@ const initialState = {
   ],
   redirectUrl: "",
   isFetchScriptCount: false,
+  journalRoles: [
+    { value: "editor", label: "Editor" },
+    { value: "reviewer", label: "Reviewer" },
+    { value: "author", label: "Author" },
+  ],
 };
 
 export default function reducer(state = initialState, action: any) {

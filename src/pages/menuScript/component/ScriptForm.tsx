@@ -6,7 +6,8 @@ import useAxiosInstance from "@/hooks/useAxiosInstance";
 // import useGlobalService from "@/hooks/useGlobalService";
 import { SetIsFetchScriptCount } from "@/redux/action";
 import { RootState } from "@/redux/store";
-import { Divider, Select, Steps } from "antd";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import { Divider, Modal, Select, Steps } from "antd";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Accordion, Card, Col, Form, Row, Table } from "react-bootstrap";
@@ -17,6 +18,7 @@ import AuthorsList from "./AuthorsList";
 import FundingSourceList from "./FundingSourceList";
 import ReviewerList from "./ReviewerList";
 
+const { confirm } = Modal;
 interface ScriptFormProps {
   currentScript?: any;
   isUpdate?: boolean;
@@ -180,8 +182,21 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
           );
           return;
         }
-        setLoading((prev: any) => ({ ...prev, submitNow: true }));
-        setFormData((prev: any) => ({ ...prev, status: "submitted" }));
+        confirm({
+          title: "Do you want to submit now?",
+          icon: <ExclamationCircleFilled />,
+          content:
+            "Once submit, manuscript status will shown as submitted, then you can't change until editor decision.",
+          cancelText: "No",
+          okText: "Yes, Submit",
+          okButtonProps: {
+            className: "btn-primary",
+          },
+          onOk() {
+            setLoading((prev: any) => ({ ...prev, submitNow: true }));
+            setFormData((prev: any) => ({ ...prev, status: "submitted" }));
+          },
+        });
       }
     } else {
       setCurrent(current + 1);
@@ -252,9 +267,9 @@ const ScriptForm: React.FC<ScriptFormProps> = ({
       saveMenuScript();
       dispatch(SetIsFetchScriptCount(true));
       if (loading.submitLater)
-        navigate("/menu-script/submission-incomplete", { replace: true });
+        navigate("/manu-script/submission-incomplete", { replace: true });
       if (loading.submitNow)
-        navigate("/menu-script/submission-processed", { replace: true });
+        navigate("/manu-script/submission-processed", { replace: true });
     }
   }, [loading, formData]);
 

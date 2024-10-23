@@ -4,10 +4,13 @@ import BaseTable, {
 } from "@/components/tables/BaseTable";
 import useAxiosInstance from "@/hooks/useAxiosInstance";
 import useGlobalService from "@/hooks/useGlobalService";
-import { TablePaginationConfig } from "antd";
+import { SetIsFetchScriptCount } from "@/redux/action";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Popconfirm, TablePaginationConfig } from "antd";
 import moment from "moment";
 import { Fragment, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 const IncompleteSubmission = () => {
@@ -20,6 +23,7 @@ const IncompleteSubmission = () => {
 
   const { axiosInstance, api } = useAxiosInstance();
   const { sanitizeHtml } = useGlobalService();
+  const dispatch = useDispatch();
 
   const fetchEntities = async (page: number, pageSize: number) => {
     setLoading(true);
@@ -52,6 +56,17 @@ const IncompleteSubmission = () => {
     fetchEntities(pagination.current!, pagination.pageSize!);
   };
 
+  const handleRemoveScript = async (record: any) => {
+    await axiosInstance
+      .delete(api(`manuscripts/${record.id}`))
+      .then((response) => {
+        if (response.status === 200) {
+          fetchEntities(pagination.current!, pagination.pageSize!);
+          dispatch(SetIsFetchScriptCount(true));
+        }
+      });
+  };
+
   const tableHeaders = () => {
     return (
       <div className="d-flex justify-content-between align-items-center"></div>
@@ -68,12 +83,21 @@ const IncompleteSubmission = () => {
       render: (_row: any, record: any) => (
         <>
           <div>
-            <Link to="/menu-script/create" state={{ manuscript: record }}>
+            <Link to="/manu-script/create" state={{ manuscript: record }}>
               Edit Submission
             </Link>
           </div>
           <div>
-            <Link to="#">Remove Submission</Link>
+            <Popconfirm
+              title="Are you sure to remove this submission?"
+              icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+              okText="Remove"
+              okButtonProps={{ className: "btn-success-transparent" }}
+              okType="default"
+              onConfirm={() => handleRemoveScript(record)}
+            >
+              <Link to="#">Remove Submission</Link>
+            </Popconfirm>
           </div>
           <div>
             <Link to="#">Correspondence</Link>
@@ -84,7 +108,7 @@ const IncompleteSubmission = () => {
         </>
       ),
     },
-    { key: "manuscript_number" },
+    { title: "Manuscript Number", key: "script_number" },
     {
       key: "title",
       render: (text: string) => (
@@ -113,7 +137,7 @@ const IncompleteSubmission = () => {
     <Fragment>
       <Card className="custom-card overflow-hidden dashboard-right-panel">
         <Card.Header className="justify-content-between">
-          <Card.Title>Submissions Being Processed</Card.Title>
+          <Card.Title>Incomplete Submission</Card.Title>
         </Card.Header>
         <Card.Body className="p-0">
           <BaseTable

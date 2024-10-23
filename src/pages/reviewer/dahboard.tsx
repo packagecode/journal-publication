@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const dashboard = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate("/manu-script/submission-processed", { replace: true });
+    navigate("/manu-script/request-for-review", { replace: true });
   }, []);
   return <></>;
 };

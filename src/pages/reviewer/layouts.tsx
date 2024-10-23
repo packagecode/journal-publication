@@ -1,6 +1,6 @@
-import useAxiosInstance from "@/hooks/useAxiosInstance";
+// import useAxiosInstance from "@/hooks/useAxiosInstance";
 import { RootState } from "@/redux/store";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -9,21 +9,21 @@ const DashboardLayout = () => {
   const panelRef = useRef<HTMLDivElement>(null);
   const user: any = useSelector((state: RootState) => state.user);
   const location = useLocation();
-  const { axiosInstance, api } = useAxiosInstance();
-  const [entitiesCount, setEntitiesCount] = useState<any>({});
+  // const { axiosInstance, api } = useAxiosInstance();
+  // const [entitiesCount, setEntitiesCount] = useState<any>({});
 
-  const fetchEntitiesCount = async () => {
-    await axiosInstance.get(api("manuscript/count")).then((response) => {
-      setEntitiesCount(response.data.manuscripts);
-    });
-  };
+  // const fetchEntitiesCount = async () => {
+  //   await axiosInstance.get(api("manuscript/count")).then((response) => {
+  //     setEntitiesCount(response.data.manuscripts);
+  //   });
+  // };
 
-  const getCount = (key: string) => {
-    return entitiesCount[key] || 0;
-  };
+  // const getCount = (key: string) => {
+  //   return entitiesCount[key] || 0;
+  // };
 
   useEffect(() => {
-    fetchEntitiesCount();
+    // fetchEntitiesCount();
     // Check if the ref is attached to the element
     if (panelRef.current) {
       const divElement = document.querySelector(".dashboard-right-panel");
@@ -86,34 +86,16 @@ const DashboardLayout = () => {
                         />
                         <li className="px-0 pt-0">
                           <span className="fs-11 text-muted op-7 fw-semibold">
-                            New Submissions
+                            Revisions
                           </span>
                         </li>
                         <MenuItem
-                          path="/manu-script/submission-processed"
-                          label={`Submitted Manuscript (${getCount(
-                            "submitted"
-                          )})`}
-                        />
-                        <li className="px-0 pt-0">
-                          <span className="fs-11 text-muted op-7 fw-semibold">
-                            Authentications
-                          </span>
-                        </li>
-                        <MenuItem
-                          path="/reviewers"
-                          state={{ userType: "reviewer" }}
-                          label="Reviewers List"
+                          path="/manu-script/request-for-review"
+                          label="Request for Revision"
                         />
                         <MenuItem
-                          path="/authors"
-                          state={{ userType: "author" }}
-                          label="Authors List"
-                        />
-                        <MenuItem
-                          path="/editors"
-                          state={{ userType: "editor" }}
-                          label="Editors List"
+                          path="/manu-script/waiting-for-revision"
+                          label="Waiting for Revision"
                         />
                       </ul>
                     </div>

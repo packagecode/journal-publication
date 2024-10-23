@@ -64,3 +64,9 @@
 .ck.ck-powered-by {
   display: none;
 }
+
+.bg-journal .ant-modal-content {
+  background-image: url(/src/assets/images/bgg2.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
